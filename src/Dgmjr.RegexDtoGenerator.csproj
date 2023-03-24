@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <Description>Generates DTOs from regular expressions</Description>
+        <DefineConstants>$(DefineConstants);SCRIBAN_SIGNED;SCRIBAN_PUBLIC</DefineConstants>
+        <SlnGenSolutionFolder>codegen</SlnGenSolutionFolder>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Common" />
+        <!-- <PackageReference Include="System.Text.Json.Usings" /> -->
+        <PackageReference Include="System.Text.Json" />
+        <PackageReference Include="Dgmjr.CodeGeneration.Constants-Scriban.Bundled" IncludeAssets="ContentFiles;Build" ExcludeAssets="Lib;Runtime;Source;Native;Analyzers" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.CSharp" PrivateAssets="All" />
+        <PackageReference Include="System.Text.RegularExpressions.Usings" />
+        <PackageReference Include="ThisAssembly" />
+        <PackageReference Include="System.Usings" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Remove="./Samples/**/*" />
+        <Using Include="System.Text.RegularExpressions.RegexOptions" Alias="Rxo" />
+        <Using Include="System.Text.RegularExpressions.Regex" Alias="REx" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageFile Include="$(OutputPath)\$(AssemblyName).dll" PackagePath="analyzers/dotnet/cs/$(TargetFramework)/$(AssemblyName).dll" Visible="false" />
+    </ItemGroup>
+</Project>

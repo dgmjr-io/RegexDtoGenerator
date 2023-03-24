@@ -1,0 +1,34 @@
+<!--
+ * Dgmjr.RegexDtoGenerator.Samples.csproj
+ * 
+ *   Created: 2022-12-28-11:49:14
+ *   Modified: 2022-12-28-11:49:16
+ * 
+ *   Author: David G. Mooore, Jr. <david@dgmjr.io>
+ *   
+ *   Copyright © 2022-2023 David G. Mooore, Jr., All Rights Reserved
+ *      License: MIT (https://opensource.org/licenses/MIT)
+-->
+
+<Project Sdk="Microsoft.NET.Sdk" InitialTargets="Clean">
+    <PropertyGroup>
+        <TargetFrameworks>netstandard2.0;net6.0;net7.0</TargetFrameworks>
+        <!-- <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net7.0</TargetFrameworks> -->
+        <!-- <TargetFramework>netstandard2.0</TargetFramework> -->
+        <IntermediateOutputPath Condition="'$(IntermediateOutputPath)' == ''">obj/</IntermediateOutputPath>
+        <SlnGenSolutionFolder>codegen</SlnGenSolutionFolder>
+    </PropertyGroup>
+    <ItemGroup>
+        <!-- <PackageReference Include="Dgmjr.RegexDtoGenerator" IncludeAssets="Analyzers;Build" ExcludeAssets="ContentFiles; Lib; Source; Native; Runtime" PrivateAssets="All" /> -->
+        <!--<PackageReference Include="Dgmjr.RegexDtoGenerator" Version="0.0.1-local" />-->
+        <PackageReference Include="System.Threading.Tasks.Extensions" VersionOverride="[4.5.4,)" />
+        <PackageReference Include="System.Text.Json" />
+        <!-- <ProjectReference Include="../src/Dgmjr.RegexDtoGenerator.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" IncludeAssets="Analyzers;Build" ExcludeAssets="ContentFiles; Lib; Source; Native; Runtime" PrivateAssets="All" /> -->
+        <!--< Include="Dgmjr.RegexDtoGenerator" ReferenceOutputAssembly="false" OutputItemType="Analyzer" IncludeAssets="build; analyzers" ExcludeAssets="ContentFiles; Lib; Source; Native;" PrivateAssets="all" VersionOverride="0.0.1-Local" />-->
+        <!--<ProjectReference Include="../src/Dgmjr.RegexDtoGenerator.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" IncludeAssets="build; analyzers" ExcludeAssets="ContentFiles; Lib; Source; Native;" PrivateAssets="all" VersionOverride="0.0.1-Local" />-->
+        <PackageReference Include="Dgmjr.RegexDtoGenerator" ReferenceOutputAssembly="false" OutputItemType="Analyzer" IncludeAssets="build; analyzers" ExcludeAssets="ContentFiles; Lib; Source; Native;" PrivateAssets="all" VersionOverride="0.0.1-Local" />
+    </ItemGroup>
+    <Target Name="Clean">
+        <RemoveDir Directories="$(BaseIntermediateOutputPath);$(IntermediateOutputPath)" />
+    </Target>
+</Project>
