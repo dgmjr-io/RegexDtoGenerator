@@ -3,8 +3,8 @@ namespace Dgmjr.RegexDtoGenerator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dgmjr.ion.Logging;
-using Dgmjr.erator.Models;
+using Dgmjr.CodeGeneration.Logging;
+using Dgmjr.RegexDtoGenerator.Models;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
