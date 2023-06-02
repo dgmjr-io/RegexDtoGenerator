@@ -17,21 +17,21 @@ namespace Contacts
 {
     public partial record class VCardBase
     {
-        #if NET7_0_OR_GREATER
+#if NET7_0_OR_GREATER
         [System.Diagnostics.CodeAnalysis.StringSyntax("regex")]
-        #endif
+#endif
         public const string RegexString = @"""BEGIN:VCARD(?:\r\n(FN=(?<FormattedName>\w+))?(?:\r\n(?<Version>VERSION(?<VersionVersion>(?<Majorint>\d+)\.(?<Minor>\d+))))?(?:
 (?<Address>ADR;TYPE=(?<TypeAddressType>\w+):(?<StreetAddress>\w+);(?<Locality>\w+);(?<Region>\w+);(?<PostalCode>\w+);(?<Country>\w+)))?(?:
 (?<Birthday>BDAY(?<BirthdayDateOnly>(?<Yearint>\d{4})-(?<Month>\d{2})-(?<Day>\d{2})))))?
 END:VCARD""";
 
-        #if NET7_0_OR_GREATER
+#if NET7_0_OR_GREATER
         [GeneratedRegex(RegexString, RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline | RegexOptions.RightToLeft | RegexOptions.Singleline)]
         public static partial System.Text.RegularExpressions.Regex Regex();
-        #else
+#else
         private static readonly System.Text.RegularExpressions.Regex _regex = new System.Text.RegularExpressions.Regex(RegexString);
         public static System.Text.RegularExpressions.Regex Regex() => _regex;
-        #endif
+#endif
 
         public static VCard Parse(string s)
         {
@@ -70,9 +70,9 @@ END:VCARD""";
         public virtual int Month { get; set; }
         public virtual int Day { get; set; }
 
-        protected VCardBase () { }
+        protected VCardBase() { }
 
-        protected VCardBase (string s)
+        protected VCardBase(string s)
         {
             var match = Regex().Match(s);
             if (!match.Success)
@@ -99,29 +99,29 @@ END:VCARD""";
 #nullable enable
 namespace Contacts
 {
-    public partial record class VCard  : VCardBase
+    public partial record class VCard : VCardBase
     {
-        #if NET7_0_OR_GREATER
+#if NET7_0_OR_GREATER
         [System.Diagnostics.CodeAnalysis.StringSyntax("regex")]
-        #endif
+#endif
         public const string RegexString = @"""BEGIN:VCARD(?:\r\n(FN=(?<FormattedName>\w+))?(?:\r\n(?<Version>VERSION(?<VersionVersion>(?<Majorint>\d+)\.(?<Minor>\d+))))?(?:
 (?<Address>ADR;TYPE=(?<TypeAddressType>\w+):(?<StreetAddress>\w+);(?<Locality>\w+);(?<Region>\w+);(?<PostalCode>\w+);(?<Country>\w+)))?(?:
 (?<Birthday>BDAY(?<BirthdayDateOnly>(?<Yearint>\d{4})-(?<Month>\d{2})-(?<Day>\d{2})))))?
 END:VCARD""";
 
-        #if NET7_0_OR_GREATER
+#if NET7_0_OR_GREATER
         [GeneratedRegex(RegexString, RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline | RegexOptions.RightToLeft | RegexOptions.Singleline)]
         public static partial System.Text.RegularExpressions.Regex Regex();
-        #else
+#else
         private static readonly System.Text.RegularExpressions.Regex _regex = new System.Text.RegularExpressions.Regex(RegexString);
         public static System.Text.RegularExpressions.Regex Regex() => _regex;
-        #endif
+#endif
 
 
 
-        public VCard () { }
+        public VCard() { }
 
-        public VCard (string s)
+        public VCard(string s)
         {
             var match = Regex().Match(s);
             if (!match.Success)
