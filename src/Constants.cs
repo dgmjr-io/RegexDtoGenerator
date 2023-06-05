@@ -61,8 +61,7 @@ public static partial class Constants
     public const string RegexDtoAttributeDeclaration =
     $$$""""
 
-    {{{Header
-}}}
+    {{{Header}}}
 
     [System.AttributeUsage(System.AttributeTargets.Class | System.AttributeTargets.Struct, Inherited = false, AllowMultiple = false)]
 [System.CodeDom.Compiler.GeneratedCode("{{{ThisAssembly.Info.Title}}}", "{{{ThisAssembly.Info.Version}}}")]
@@ -83,7 +82,7 @@ internal sealed class RegexDtoAttribute : System.Attribute
 
 public const string RegexDtoAttributeUsage =
 """"
-[RegexDto(@""(?< Name >\\w +)(?< Age >\\d +)"")]
+    [RegexDto(@""(?<Name>\\w+) (?<Age>\\d+)"")]
     public class PersonDto
 {
     public string Name { get; set; }
@@ -99,15 +98,9 @@ public const string RegexDtoBaseTypeDeclaration =
 namespace {{ namespace_name }}
     {
     [System.CodeDom.Compiler.GeneratedCode("{{{{ThisAssembly.Info.Title}}}}", "{{{{ThisAssembly.Info.Version}}}}")]
-    { { visibility } }
-    partial abstract
-{ { target_data_structure_type } }
-{ { type_name } }
-Base
-{ { if base_type != "" } } : { { base_type } }
-{ { end } }
+        {{ visibility }} partial abstract {{ target_data_structure_type }} {{ type_name }}Base {{ if base_type != "" }} : {{ base_type }} {{ end }}
 {
-    const RegexOptions RegexOptions = (RegexOptions)({ { regex_options | string.replace ","  " | " } });
+            const RegexOptions RegexOptions = (RegexOptions)({{ regex_options | string.replace ","  " | " }});
 
     #if NET7_0_OR_GREATER
             [System.Diagnostics.CodeAnalysis.StringSyntax("regex")]
@@ -121,12 +114,10 @@ private static readonly System.Text.RegularExpressions.Regex _regex = new System
 public static System.Text.RegularExpressions.Regex Regex() => _regex;
 //#endif
 
-{ { members } }
+            {{ members }}
         }
 
-        protected
-{ { type_name } }
-Base()
+        protected {{ type_name }}Base()
         {
 }
     }
@@ -141,13 +132,9 @@ public const string RegexDtoTypeDeclaration =
 namespace {{ namespace_name }}
     {
     [System.CodeDom.Compiler.GeneratedCode("{{{{ThisAssembly.Info.Title}}}}", "{{{{ThisAssembly.Info.Version}}}}")]
-    { { visibility } }
-    partial { { target_data_structure_type } }
-    { { type_name } }
-    { { if base_type != "" } } : { { base_type } }
-    { { end } }
+        {{ visibility }} partial {{ target_data_structure_type }} {{ type_name }} {{ if base_type != "" }} : {{ base_type }} {{ end }}
     {
-        const RegexOptions RegexOptions = (RegexOptions)({ { regex_options | string.replace "," " | " } });
+            const RegexOptions RegexOptions = (RegexOptions)({{ regex_options | string.replace "," " | " }});
 
     #if NET7_0_OR_GREATER
             [System.Diagnostics.CodeAnalysis.StringSyntax("regex")]
@@ -162,7 +149,7 @@ private static readonly System.Text.RegularExpressions.Regex _regex = new System
 public static System.Text.RegularExpressions.Regex Regex() => _regex;
 //#endif
 
-{ { members } }
+            {{ members }}
         }
     }
 
@@ -170,9 +157,7 @@ public static System.Text.RegularExpressions.Regex Regex() => _regex;
 
 public const string RegexDtoParseDeclaration =
 """
-    public static
-{ { type_name } }
-Parse(string s)
+    public static {{ type_name }} Parse(string s)
     {
     var match = Regex().Match(s);
     if (!match.Success)
@@ -180,26 +165,23 @@ Parse(string s)
         throw new System.ArgumentException($"The string \"{s}\" does not match the regular expression \"{RegexString}\".", nameof(s));
     }
 
-    return new {{ type_name }
-}
+        return new {{ type_name }}
 {
-    { { ~ for property in properties ~} }
-    { { ~ if property.is_nullable ~} }
-    { { property.name } } = match.Groups["{{ property.name }}"]?.Value is null ? null : ({ { property.type } }?)System.Convert.ChangeType(match.Groups["{{ property.name }}"]?.Value, typeof({ { property.type } })),
-            { { ~ else ~} }
-    { { property.name } } = ({ { property.type } })System.Convert.ChangeType(match.Groups["{{ property.name }}"]?.Value, typeof({ { property.type } })),
-            { { ~end ~} }
-    { { ~end ~} }
+            {{~ for property in properties ~}}
+            {{~ if property.is_nullable ~}}
+            {{ property.name }} = match.Groups["{{ property.name }}"]?.Value is null ? null : ({{ property.type }}?)System.Convert.ChangeType(match.Groups["{{ property.name }}"]?.Value, typeof({{ property.type }})),
+            {{~ else ~}}
+            {{ property.name }} = ({{ property.type }})System.Convert.ChangeType(match.Groups["{{ property.name }}"]?.Value, typeof({{ property.type }})),
+            {{~ end ~}}
+            {{~ end ~}}
 };
     }
     """;
     public const string RegexDtoConstructorDeclaration =
     """
-    { { parameterless_constructor_visibility } }
-{ { type_name } } () { }
+    {{ parameterless_constructor_visibility }} {{ type_name }} () { }
 
-{ { parameterized_constructor_visibility } }
-{ { type_name } } (string s)
+    {{ parameterized_constructor_visibility }} {{ type_name }} (string s)
     {
     var match = Regex().Match(s);
     if (!match.Success)
@@ -207,33 +189,25 @@ Parse(string s)
         throw new System.ArgumentException($"The string \"{s}\" does not match the regular expression \"{RegexString}\".", nameof(s));
     }
 
-    { { ~ for property in properties ~} }
-    { { ~ if property.is_nullable ~} }
-    { { property.name } } = match.Groups["{{ property.name }}"]?.Value is null ? null : ({ { property.type } }?)System.Convert.ChangeType(match.Groups["{{ property.name }}"]?.Value, typeof({ { property.type } }));
-    { { ~ else ~} }
-    { { property.name } } = ({ { property.type } })System.Convert.ChangeType(match.Groups["{{ property.name }}"]?.Value, typeof({ { property.type } }));
-    { { ~end ~} }
-    { { ~end ~} }
+        {{~ for property in properties ~}}
+        {{~ if property.is_nullable ~}}
+        {{ property.name }} = match.Groups["{{ property.name }}"]?.Value is null ? null : ({{ property.type }}?)System.Convert.ChangeType(match.Groups["{{ property.name }}"]?.Value, typeof({{ property.type }}));
+        {{~ else ~}}
+        {{ property.name }} = ({{ property.type }})System.Convert.ChangeType(match.Groups["{{ property.name }}"]?.Value, typeof({{ property.type }}));
+        {{~ end ~}}
+        {{~ end ~}}
 }
 """;
 
     public const string RegexDtoPropertiesDeclaration =
     """
-    { { ~ for property in properties ~} }
-{ { ~ if property.is_nullable ~} }
-public
-{ { property.overridability } }
-{ { property.type } }?
-{ { property.name } }
-{ get; set; }
-{ { ~ else ~} }
-public
-{ { property.overridability } }
-{ { property.type } }
-{ { property.name } }
-{ get; set; }
-{ { ~end ~} }
-{ { ~end ~} }
+    {{~ for property in properties ~}}
+    {{~ if property.is_nullable ~}}
+    public {{ property.overridability }} {{ property.type }}? {{ property.name }} { get; set; }
+    {{~ else ~}}
+    public {{ property.overridability }} {{ property.type }} {{ property.name }} { get; set; }
+    {{~ end ~}}
+    {{~ end ~}}
 """;
 
     public static readonly Scriban.Template RegexDtoDeclarationTemplate =
