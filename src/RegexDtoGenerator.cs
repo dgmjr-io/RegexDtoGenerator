@@ -182,15 +182,17 @@ public class RegexDtoGenerator : IIncrementalGenerator
                                     ? $"{baseType}"
                                     : "",
                             Members = $"""
-                                {Constants.RegexDtoParseDeclarationTemplate.Render(propertiesDeclarationModel)}
-                                {Constants.RegexDtoPropertiesDeclarationTemplate.Render(propertiesDeclarationModel)}
-                                {Constants.RegexDtoConstructorDeclarationTemplate.Render(new RegexDtoConstructorDeclarationModel
-                            {
-                                ParameterlessConstructorVisibility = isClass ? "protected" : "public",
-                                ParameterizedConstructorVisibility = isClass ? "protected" : "public",
-                                TypeName = typeName + "Base",
-                                Properties = propertiesDeclarationModel.Properties
-                            })}
+                                { Constants.RegexDtoParseDeclarationTemplate.Render(propertiesDeclarationModel) }
+                                { Constants.RegexDtoPropertiesDeclarationTemplate.Render(propertiesDeclarationModel) }
+                                {
+                                Constants.RegexDtoConstructorDeclarationTemplate.Render(new RegexDtoConstructorDeclarationModel
+                                {
+                                    ParameterlessConstructorVisibility = isClass ? "protected" : "public",
+                                    ParameterizedConstructorVisibility = isClass ? "protected" : "public",
+                                    TypeName = typeName + "Base",
+                                    Properties = propertiesDeclarationModel.Properties
+                                })
+                            }
                                 """
                         };
 
@@ -233,15 +235,17 @@ public class RegexDtoGenerator : IIncrementalGenerator
                         ),
                         BaseType = isClass ? typeName + "Base" : "",
                         Members = $"""
-                            {(!isClass ? Constants.RegexDtoParseDeclarationTemplate.Render(propertiesDeclarationModel2) : "")}
-                            {(!isClass ? Constants.RegexDtoPropertiesDeclarationTemplate.Render(propertiesDeclarationModel2) : "")}
-                            {Constants.RegexDtoConstructorDeclarationTemplate.Render(new RegexDtoConstructorDeclarationModel
-                        {
-                            ParameterlessConstructorVisibility = "public",
-                            ParameterizedConstructorVisibility = "public",
-                            TypeName = typeName,
-                            Properties = propertiesDeclarationModel2.Properties
-                        })}
+                            { (!isClass ? Constants.RegexDtoParseDeclarationTemplate.Render(propertiesDeclarationModel2) : "") }
+                            { (!isClass ? Constants.RegexDtoPropertiesDeclarationTemplate.Render(propertiesDeclarationModel2) : "") }
+                            {
+                            Constants.RegexDtoConstructorDeclarationTemplate.Render(new RegexDtoConstructorDeclarationModel
+                            {
+                                ParameterlessConstructorVisibility = "public",
+                                ParameterizedConstructorVisibility = "public",
+                                TypeName = typeName,
+                                Properties = propertiesDeclarationModel2.Properties
+                            })
+                        }
                             """
                     };
 
@@ -271,9 +275,10 @@ public class RegexDtoGenerator : IIncrementalGenerator
                 context =>
                     context.AddSource(
                         $"{Constants.RegexDtoAttributeName}.g.cs",
-                        Constants.RegexDtoAttributeDeclarationTemplate.Render(new {
+                        Constants.RegexDtoAttributeDeclarationTemplate.Render(new
+                        {
                             Filename = $"{Constants.RegexDtoAttributeName}.g.cs",
-                            
+
                         })
                     )
             );
