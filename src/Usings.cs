@@ -10,4 +10,3 @@
  *      License: MIT (https://opensource.org/licenses/MIT)
  */
 
-global using Convert = System.Convert;

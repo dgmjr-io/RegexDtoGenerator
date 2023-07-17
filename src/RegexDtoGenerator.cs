@@ -9,12 +9,11 @@ using Dgmjr.RegexDtoGenerator.Models;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using REx = System.Text.RegularExpressions.Regex;
-using Rxo = RegexOptions;
 
 [Generator]
 public class RegexDtoGenerator : IIncrementalGenerator
 {
+    private const string NewLine = "\n";
     private const string RegexString = @"\(\?\<(?<Name>\w+)(?:\:(?<Type>\w+\??))?\>.*?\)";
     private static readonly REx Regex =
         new(RegexString, Compiled | IgnoreCase | Multiline);
@@ -131,7 +130,7 @@ public class RegexDtoGenerator : IIncrementalGenerator
                         targetDataStructureType: {targetDataStructureType}
                         typeName: {typeName}
                         namespaceName: {namespaceName}
-                        matches: {string.Join(Environment.NewLine, matches.OfType<Match>().SelectMany(m => m?.Groups?.OfType<Group>()).Select(g => g?.Index + ": " + g?.Value))}
+                        matches: {string.Join(NewLine, matches.OfType<Match>().SelectMany(m => m?.Groups?.OfType<Group>()).Select(g => g?.Index + ": " + g?.Value))}
                         regex: {regex}
                         visibility: {visibility}
                     */
@@ -182,17 +181,15 @@ public class RegexDtoGenerator : IIncrementalGenerator
                                     ? $"{baseType}"
                                     : "",
                             Members = $"""
-                                { Constants.RegexDtoParseDeclarationTemplate.Render(propertiesDeclarationModel) }
-                                { Constants.RegexDtoPropertiesDeclarationTemplate.Render(propertiesDeclarationModel) }
-                                {
-                                Constants.RegexDtoConstructorDeclarationTemplate.Render(new RegexDtoConstructorDeclarationModel
-                                {
-                                    ParameterlessConstructorVisibility = isClass ? "protected" : "public",
-                                    ParameterizedConstructorVisibility = isClass ? "protected" : "public",
-                                    TypeName = typeName + "Base",
-                                    Properties = propertiesDeclarationModel.Properties
-                                })
-                            }
+                                {Constants.RegexDtoParseDeclarationTemplate.Render(propertiesDeclarationModel)}
+                                {Constants.RegexDtoPropertiesDeclarationTemplate.Render(propertiesDeclarationModel)}
+                                {Constants.RegexDtoConstructorDeclarationTemplate.Render(new RegexDtoConstructorDeclarationModel
+                            {
+                                ParameterlessConstructorVisibility = isClass ? "protected" : "public",
+                                ParameterizedConstructorVisibility = isClass ? "protected" : "public",
+                                TypeName = typeName + "Base",
+                                Properties = propertiesDeclarationModel.Properties
+                            })}
                                 """
                         };
 
@@ -235,17 +232,15 @@ public class RegexDtoGenerator : IIncrementalGenerator
                         ),
                         BaseType = isClass ? typeName + "Base" : "",
                         Members = $"""
-                            { (!isClass ? Constants.RegexDtoParseDeclarationTemplate.Render(propertiesDeclarationModel2) : "") }
-                            { (!isClass ? Constants.RegexDtoPropertiesDeclarationTemplate.Render(propertiesDeclarationModel2) : "") }
-                            {
-                            Constants.RegexDtoConstructorDeclarationTemplate.Render(new RegexDtoConstructorDeclarationModel
-                            {
-                                ParameterlessConstructorVisibility = "public",
-                                ParameterizedConstructorVisibility = "public",
-                                TypeName = typeName,
-                                Properties = propertiesDeclarationModel2.Properties
-                            })
-                        }
+                            {(!isClass ? Constants.RegexDtoParseDeclarationTemplate.Render(propertiesDeclarationModel2) : "")}
+                            {(!isClass ? Constants.RegexDtoPropertiesDeclarationTemplate.Render(propertiesDeclarationModel2) : "")}
+                            {Constants.RegexDtoConstructorDeclarationTemplate.Render(new RegexDtoConstructorDeclarationModel
+                        {
+                            ParameterlessConstructorVisibility = "public",
+                            ParameterizedConstructorVisibility = "public",
+                            TypeName = typeName,
+                            Properties = propertiesDeclarationModel2.Properties
+                        })}
                             """
                     };
 
