@@ -1,4 +1,5 @@
 ---
+
 authors: 
 - dgmjr
 title: Regex DTO Generator
@@ -6,7 +7,7 @@ lastmod: 2022-12-28-07:31:51
 date: 2022-12-28-07:31:50
 license: MIT
 type: readme
----
+------------
 
 # Regex DTO Generator
 
