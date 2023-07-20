@@ -16,8 +16,6 @@ using Dgmjr.RegexDtoGenerator.Models;
 
 internal record struct RegexDtoDeclarationTemplateModel
 {
-    public RegexDtoDeclarationTemplateModel() { }
-
     public string NamespaceName { get; set; }
     public string TargetDataStructureType { get; set; }
     public string TypeName { get; set; }

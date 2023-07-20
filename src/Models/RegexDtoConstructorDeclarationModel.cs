@@ -14,8 +14,6 @@ namespace Dgmjr.RegexDtoGenerator.Models;
 
 internal record struct RegexDtoConstructorDeclarationModel
 {
-    public RegexDtoConstructorDeclarationModel() { }
-
     public string ParameterizedConstructorVisibility { get; set; }
     public string ParameterlessConstructorVisibility { get; set; }
     public string TypeName { get; set; }
