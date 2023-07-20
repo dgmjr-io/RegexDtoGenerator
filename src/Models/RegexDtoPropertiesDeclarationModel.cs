@@ -12,14 +12,7 @@
 
 namespace Dgmjr.RegexDtoGenerator.Models;
 
-internal record struct RegexDtoPropertiesDeclarationModel
-{
-    public string TypeName {
-        get;
-        set;
-    }
-    public RegexDtoPropertyDeclarationModel[] Properties {
-        get;
-        set;
-    }
+internal record struct RegexDtoPropertiesDeclarationModel {
+  public string TypeName { get; set; }
+  public RegexDtoPropertyDeclarationModel[] Properties { get; set; }
 }
