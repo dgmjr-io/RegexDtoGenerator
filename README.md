@@ -1,11 +1,18 @@
 ---
-authors: 
+authors:
   - dgmjr
 title: Regex DTO Generator
+description: This is a simple tool to generate DTOs from a regex. It is a work in progress.
 lastmod: 2022-12-28-07:31:51
 date: 2022-12-28-07:31:50
 license: MIT
 type: readme
+keywords:
+  - codegen
+  - roslyn
+  - source-generator
+  - roslyn-generator
+slug: regex-dto-generator
 ---
 
 # Regex DTO Generator
@@ -17,33 +24,30 @@ This is a simple tool to generate DTOs from a regex. It is a work in progress.
 Simply decorate any `class`, `record`, `struct`, `record class`, or
 `record struct` with the attribute `[RegexDtoAttribute]` and provide a regular expression with names groups.  You can extend the regular expression syntax by including the primitive data types in the name group separated from the name by a colon (`:`).  The following data types are supported:
 
-    - `string`
-    - `int`
-    - `long`
-    - `float`
-    - `double`
-    - `decimal`
-    - `bool`
-    - `DateTime`
-    - `DateTimeOffset`
-    - `TimeSpan`
-    - `Guid`
-    - `Uri`
-    - Really, any type that implements `IConvertible` and is convertible to/from a `string`
+* `string`
+* `int`
+* `long`
+* `float`
+* `double`
+* `decimal`
+* `bool`
+* `DateTime`
+* `DateTimeOffset`
+* `TimeSpan`
+* `Guid`
+* `Uri`
+* Really, any type that implements `IConvertible` and is convertible to/from a `string`
 
 Let's say you want to pull out the room number and password from a Zoom URL.  You can do this with the following code:
 
 ```csharp
-
 [RegexDto("https://zoom.us/j/(?<RoomNumber:int>[0-9]{10,11})(?:&pwd=(?<Password:string?>[a-zA-Z0-9]{6,8}))?")]
 public partial record struct ZoomRoomDto { }
-
 ```
 
 This will generate the following code for you:
 
 ```csharp
-
 [System.CodeDom.Compiler.GeneratedCode("Dgmjr.RegexDtoGenerator", "0.0.1.0")]
 public partial record struct ZoomRoom
 {
@@ -93,7 +97,6 @@ public partial record struct ZoomRoom
         Password = match.Groups["Password"]?.Value is null ? null : (string?)System.Convert.ChangeType(match.Groups["Password"]?.Value, typeof(string));
     }
 }
-
 ```
 
 Which can then be complemented by the partial definition below:
