@@ -1,7 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <Title>DGMJR-IO Regex DTO Generator</Title>
+        <!-- <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks> -->
         <TargetFramework>netstandard2.0</TargetFramework>
+        <!-- <TargetFramework>net8.0</TargetFramework> -->
         <Description>Generates DTOs from regular expressions</Description>
         <DefineConstants>$(DefineConstants);SCRIBAN_SIGNED;SCRIBAN_PUBLIC</DefineConstants>
         <SlnGenSolutionFolder>codegen</SlnGenSolutionFolder>
@@ -25,6 +27,7 @@
         <Using Include="System.Text.RegularExpressions.RegexOptions" Alias="Rxo" />
         <Using Include="System.Text.RegularExpressions.RegexOptions" Static="true" />
         <Using Include="System.Text.RegularExpressions.Regex" Alias="REx" />
+        <Using Include="System.DateTimeOffset" Static="true" />
     </ItemGroup>
 
     <PropertyGroup>

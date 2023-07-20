@@ -12,9 +12,9 @@
 
 <Project Sdk="Microsoft.NET.Sdk" InitialTargets="Clean">
     <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;net6.0;net7.0;net8.0</TargetFrameworks>
+        <!-- <TargetFrameworks>net8.0</TargetFrameworks> -->
         <!-- <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net7.0</TargetFrameworks> -->
-        <!-- <TargetFramework>netstandard2.0</TargetFramework> -->
+        <TargetFramework>netstandard2.0</TargetFramework>
         <IntermediateOutputPath Condition="'$(IntermediateOutputPath)' == ''">obj/</IntermediateOutputPath>
         <SlnGenSolutionFolder>codegen</SlnGenSolutionFolder>
     </PropertyGroup>

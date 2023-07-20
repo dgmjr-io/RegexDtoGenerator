@@ -12,9 +12,7 @@
 
 namespace Contacts;
 
-[RegexDto(
-    @"^(?<FirstName:string?>\w+)?\s*?(?<LastName:string?>\w+)?\s*?\<(?<Username>\w+)@(?<Domain>\w+).(?<Tld>\w+))\>$"
-)]
+[RegexDto(@"^(?<FirstName:string?>\w+)?\s*?(?<LastName:string?>\w+)?\s*?\<(?<Username>\w+)@(?<Domain>((?:\w+\.))(?<Tld>\w+)))\>$")]
 public partial record struct EmailAddressWithDisplayName { }
 
 

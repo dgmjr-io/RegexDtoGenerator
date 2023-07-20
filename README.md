@@ -1,10 +1,11 @@
 ---
-author: David G. Mooore, Jr.
-author_email: david@dgmjr.io
-title: Regex DTO Generator README
-modified: 2022-12-28-07:31:51
-created: 2022-12-28-07:31:50
+authors: 
+  - dgmjr
+title: Regex DTO Generator
+lastmod: 2022-12-28-07:31:51
+date: 2022-12-28-07:31:50
 license: MIT
+type: readme
 ---
 
 # Regex DTO Generator
@@ -32,24 +33,38 @@ Simply decorate any `class`, `record`, `struct`, `record class`, or
 
 Let's say you want to pull out the room number and password from a Zoom URL.  You can do this with the following code:
 
-```csharp title="ZoomRoom.cs"
+```csharp
 
 [RegexDto("https://zoom.us/j/(?<RoomNumber:int>[0-9]{10,11})(?:&pwd=(?<Password:string?>[a-zA-Z0-9]{6,8}))?")]
-public partial record struct ZoomRoom { }
+public partial record struct ZoomRoomDto { }
+
 ```
 
 This will generate the following code for you:
 
-```csharp title="ZoomRoom.g.cs"
+```csharp
 
+[System.CodeDom.Compiler.GeneratedCode("Dgmjr.RegexDtoGenerator", "0.0.1.0")]
 public partial record struct ZoomRoom
 {
-    public const string RegexString = @"""https://zoom.us/j/(?<RoomNumber>[0-9]{10,11})(?:&pwd=(?<Password>[a-zA-Z0-9]{6,8}))?""";
-    public static readonly System.Text.RegularExpressions.Regex Regex = new System.Text.RegularExpressions.Regex(RegexString);
+    const RegexOptions RegexOptions = (RegexOptions)(IgnoreCase |  ExplicitCapture |  Compiled);
+
+    #if NET7_0_OR_GREATER
+    [StringSyntax(@StringSyntax.Regex)]
+    #endif
+    public const string RegexString = @"https://zoom.us/j/(?<RoomNumber>[0-9]{10,11})(?:&pwd=(?<Password>[a-zA-Z0-9]{6,8}))?";
+
+    #if NET7_0_OR_GREATER
+    [GeneratedRegex(RegexString, Compiled | CultureInvariant | IgnoreCase)]
+    public static partial System.Text.RegularExpressions.Regex Regex();
+    #else
+    private static readonly System.Text.RegularExpressions.Regex _regex = new System.Text.RegularExpressions.Regex(RegexString, RegexOptions);
+    public static System.Text.RegularExpressions.Regex Regex() => _regex;
+    #endif
 
     public static ZoomRoom Parse(string s)
     {
-        var match = Regex.Match(s);
+        var match = Regex().Match(s);
         if (!match.Success)
         {
             throw new System.ArgumentException($"The string \"{s}\" does not match the regular expression \"{RegexString}\".", nameof(s));
@@ -61,9 +76,31 @@ public partial record struct ZoomRoom
             Password = match.Groups["Password"]?.Value is null ? null : (string?)System.Convert.ChangeType(match.Groups["Password"]?.Value, typeof(string)),
         };
     }
+    public  int RoomNumber { get; set; }
+    public  string? Password { get; set; }
 
-    public int RoomNumber { get; set; }
-    public string? Password { get; set; }
+    public ZoomRoom () { }
+
+    public ZoomRoom (string s)
+    {
+        var match = Regex().Match(s);
+        if (!match.Success)
+        {
+            throw new System.ArgumentException($"The string \"{s}\" does not match the regular expression \"{RegexString}\".", nameof(s));
+        }
+
+        RoomNumber = (int)System.Convert.ChangeType(match.Groups["RoomNumber"]?.Value, typeof(int));
+        Password = match.Groups["Password"]?.Value is null ? null : (string?)System.Convert.ChangeType(match.Groups["Password"]?.Value, typeof(string));
+    }
 }
 
+```
+
+Which can then be complemented by the partial definition below:
+
+```csharp
+public partial record struct ZoomRoom
+{
+    public Uri Url => new Uri($"https://zoom.us/j/{RoomNumber}{(!string.IsNullOrEmpty(Password) ? $"?pwd={Password}" : "")}");
+}
 ```

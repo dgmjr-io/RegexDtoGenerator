@@ -1,52 +1,91 @@
 namespace Dgmjr.RegexDtoGenerator;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Dgmjr.CodeGeneration.Logging;
 using Dgmjr.RegexDtoGenerator.Models;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
+
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Text.RegularExpressions;
+
+using static Dgmjr.RegexDtoGenerator.Constants;
+using static System.DateTimeOffset;
+using static System.Text.RegularExpressions.RegexOptions;
 
 [Generator]
-public class RegexDtoGenerator : IIncrementalGenerator
+public partial class RegexDtoGenerator : IIncrementalGenerator
 {
     private const string NewLine = "\n";
     private const string RegexString = @"\(\?\<(?<Name>\w+)(?:\:(?<Type>\w+\??))?\>.*?\)";
-    private static readonly REx Regex =
-        new(RegexString, Compiled | IgnoreCase | Multiline);
+    private const RegexOptions RegexOptions = Compiled | IgnoreCase | Multiline;
+
+#if NET7_0_OR_GREATER
+    [GeneratedRegex(RegexString, RegexOptions)]
+    private static partial REx Regex();
+#else
+    private static REx Regex() => _regex;
+    private static readonly REx _regex = new(RegexString, RegexOptions);
+#endif
 
     private SourceGeneratorLogger<RegexDtoGenerator> Logger { get; } = new SourceGeneratorLogger<RegexDtoGenerator>((message, severity) => WriteLine($"{severity}: {message}"));
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
+        context.RegisterPostInitializationOutput(
+            context =>
+                context.AddSource(
+                    $"{RegexDtoAttributeName}.g.cs",
+                    SourceText.From(
+                        "/* foo bar */" +
+                        HeaderTemplate.Render(new
+                        {
+                            Filename = $"{RegexDtoAttributeName}.g.cs",
+                            CreatedDate = UtcNow.ToString(DateFormat)
+                        })
+                            +
+                            RegexDtoAttributeDeclarationTemplate.Render(new
+                            {
+                                Filename = $"{RegexDtoAttributeName}.g.cs",
+                                CreatedDate = UtcNow.ToString(DateFormat)
+                            }
+                        ),
+                        Encoding.UTF8
+                    )
+                )
+            );
+
         try
         {
             var sources = context.SyntaxProvider.ForAttributeWithMetadataName(
-                Constants.RegexDtoAttributeName,
+                RegexDtoAttributeName,
                 (node, _) => node is TypeDeclarationSyntax,
                 (ctx, _) =>
                 {
-                    var regex = ctx.Attributes[0].ConstructorArguments
+                    var sources = new List<RegexDtoFileModel>();
+                    var regex = ctx.Attributes[0]
+                        .ConstructorArguments
                         .FirstOrDefault()
-                        .Value.ToString();
-                    var matches = Regex.Matches(regex);
+                        .Value
+                        .ToString();
+                    var matches = Regex().Matches(regex);
                     var typeName = ctx.TargetSymbol.MetadataName;
                     var namespaceName = ctx.TargetSymbol.ContainingNamespace.ToDisplayString();
-                    var targetDataStructureType =
-                        ctx.TargetNode.Kind() is SyntaxKind.RecordStructDeclaration
-                            ? "record struct"
-                            : ctx.TargetNode.Kind() is SyntaxKind.RecordDeclaration
-                                ? "record class"
-                                : ctx.TargetNode.Kind() is SyntaxKind.StructDeclaration
-                                    ? "struct"
-                                    : ctx.TargetNode.Kind() is SyntaxKind.ClassDeclaration
-                                        ? "class"
-                                        : throw new NotSupportedException(
-                                            $"The type {ctx.TargetNode.GetType().Name} is not supported."
-                                        );
+                    var targetDataStructureType = ctx.TargetNode.Kind() switch
+                    {
+                        SyntaxKind.RecordStructDeclaration => "record struct",
+                        SyntaxKind.RecordDeclaration => "record class",
+                        SyntaxKind.StructDeclaration => "struct",
+                        SyntaxKind.ClassDeclaration => "class",
+                        _ => throw new NotSupportedException($"The type {ctx.TargetNode.GetType().Name} is not supported.")
+                    };
                     var baseTypeSymbolKind = ctx.Attributes[0].ConstructorArguments
                         .Skip(1)
                         .FirstOrDefault()
@@ -57,10 +96,12 @@ public class RegexDtoGenerator : IIncrementalGenerator
                                         .Value;
                     var baseTypeValueType = baseTypeValue?.GetType();
                     var baseType =
-                            ctx.Attributes[0].ConstructorArguments
-                                    .Skip(1)
-                                    .FirstOrDefault()
-                                    .Value?.ToString();
+                            ctx.Attributes[0]
+                                .ConstructorArguments
+                                .Skip(1)
+                                .FirstOrDefault()
+                                .Value
+                                ?.ToString();
                     Logger.LogInformation($"Found regex: {regex}.");
                     Logger.LogInformation(
                         "Base type symbol",
@@ -130,13 +171,11 @@ public class RegexDtoGenerator : IIncrementalGenerator
                         targetDataStructureType: {targetDataStructureType}
                         typeName: {typeName}
                         namespaceName: {namespaceName}
-                        matches: {string.Join(NewLine, matches.OfType<Match>().SelectMany(m => m?.Groups?.OfType<Group>()).Select(g => g?.Index + ": " + g?.Value))}
+                        matches: {Join(NewLine, matches.OfType<Match>().SelectMany(m => m?.Groups?.OfType<Group>()).Select(g => g?.Index + ": " + g?.Value))}
                         regex: {regex}
                         visibility: {visibility}
                     */
                     """;
-
-                    var source = new System.Text.StringBuilder();
 
                     if (isClass)
                     {
@@ -154,7 +193,7 @@ public class RegexDtoGenerator : IIncrementalGenerator
                                         m =>
                                             new RegexDtoPropertyDeclarationModel(
                                                 Name: m.Groups["Name"].Value,
-                                                Type: string.IsNullOrEmpty(
+                                                Type: IsNullOrEmpty(
                                                     m.Groups["Type"].Value.Replace("?", "")
                                                 )
                                                     ? "string"
@@ -173,27 +212,28 @@ public class RegexDtoGenerator : IIncrementalGenerator
                             TypeName = typeName + "Base",
                             Visibility = visibility,
                             TargetDataStructureType = targetDataStructureType,
-                            Regex = Regex.Replace(
+                            Regex = Regex().Replace(
                                 regex,
                                 m => m.Value.Replace(":" + m.Groups["Type"].Value, "")
                             ),
                             BaseType = !isClass || baseType != typeof(object).FullName
                                     ? $"{baseType}"
                                     : "",
-                            Members = $"""
-                                {Constants.RegexDtoParseDeclarationTemplate.Render(propertiesDeclarationModel)}
-                                {Constants.RegexDtoPropertiesDeclarationTemplate.Render(propertiesDeclarationModel)}
-                                {Constants.RegexDtoConstructorDeclarationTemplate.Render(new RegexDtoConstructorDeclarationModel
+                            Members =
+                            $"""
+                            {RegexDtoParseDeclarationTemplate.Render(propertiesDeclarationModel)}
+                            {RegexDtoPropertiesDeclarationTemplate.Render(propertiesDeclarationModel)}
+                            {RegexDtoConstructorDeclarationTemplate.Render(new RegexDtoConstructorDeclarationModel
                             {
                                 ParameterlessConstructorVisibility = isClass ? "protected" : "public",
                                 ParameterizedConstructorVisibility = isClass ? "protected" : "public",
                                 TypeName = typeName + "Base",
                                 Properties = propertiesDeclarationModel.Properties
                             })}
-                                """
+                            """
                         };
 
-                        var __ = source.Append(Constants.RegexDtoDeclarationTemplate.Render(baseTypeModel));
+                        sources.Add(new(RegexDtoDeclarationTemplate.Render(baseTypeModel), baseTypeModel.TypeName, baseTypeModel.NamespaceName));
                     }
 
                     // if(isCla
@@ -226,15 +266,15 @@ public class RegexDtoGenerator : IIncrementalGenerator
                         TypeName = typeName,
                         Visibility = visibility,
                         TargetDataStructureType = targetDataStructureType,
-                        Regex = Regex.Replace(
+                        Regex = Regex().Replace(
                             regex,
                             m => m.Value.Replace(":" + m.Groups["Type"].Value, "")
                         ),
                         BaseType = isClass ? typeName + "Base" : "",
                         Members = $"""
-                            {(!isClass ? Constants.RegexDtoParseDeclarationTemplate.Render(propertiesDeclarationModel2) : "")}
-                            {(!isClass ? Constants.RegexDtoPropertiesDeclarationTemplate.Render(propertiesDeclarationModel2) : "")}
-                            {Constants.RegexDtoConstructorDeclarationTemplate.Render(new RegexDtoConstructorDeclarationModel
+                            {(!isClass ? RegexDtoParseDeclarationTemplate.Render(propertiesDeclarationModel2) : "")}
+                            {(!isClass ? RegexDtoPropertiesDeclarationTemplate.Render(propertiesDeclarationModel2) : "")}
+                            {RegexDtoConstructorDeclarationTemplate.Render(new RegexDtoConstructorDeclarationModel
                         {
                             ParameterlessConstructorVisibility = "public",
                             ParameterizedConstructorVisibility = "public",
@@ -244,39 +284,29 @@ public class RegexDtoGenerator : IIncrementalGenerator
                             """
                     };
 
-                    var ___ = source.Append(Constants.RegexDtoDeclarationTemplate.Render(typeModel))
-                                     .Append(baseTypeDiagnosticInfo);
-
-                    return new
-                    {
-                        Source = source.ToString(),
-                        TypeName = typeName,
-                        NamespaceName = namespaceName
-                    };
+                    sources.Add(new(RegexDtoDeclarationTemplate.Render(typeModel), typeModel.TypeName, typeModel.NamespaceName));
+                    sources.Add(new(baseTypeDiagnosticInfo, $"{typeModel.TypeName}.{nameof(baseTypeDiagnosticInfo)}.g.cs", string.Empty));
+                    return sources;
                 }
             );
 
             context.RegisterSourceOutput(
                 sources,
-                (context, source) => context.AddSource($"{source.TypeName}.cs",
-                Scriban.Template.Parse(Constants.Header).Render(new
+                (context, sources) =>
                 {
-                    FileName = $"{source.TypeName}.cs",
-                    CreatedDate = Now.ToString("yyyy-MM-dd")
-                }) + source.Source)
-            );
-
-            context.RegisterPostInitializationOutput(
-                context =>
-                    context.AddSource(
-                        $"{Constants.RegexDtoAttributeName}.g.cs",
-                        Constants.RegexDtoAttributeDeclarationTemplate.Render(new
+                    foreach (var source in sources)
+                    {
+                        context.AddSource($"{source.TypeName}.cs",
+                        SourceText.From(HeaderTemplate.Render(new
                         {
-                            Filename = $"{Constants.RegexDtoAttributeName}.g.cs",
-
-                        })
-                    )
+                            FileName = $"{source.TypeName}.cs",
+                            CreatedDate = UtcNow.ToString(DateFormat)
+                        }) + source.Source,
+                        Encoding.UTF8));
+                    }
+                }
             );
+
             //     (attribute, metadata) =>
             // {
             //     var regex = attribute.ArgumentList.Arguments[0].Expression.ToString();

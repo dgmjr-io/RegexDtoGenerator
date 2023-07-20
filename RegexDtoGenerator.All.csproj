@@ -18,5 +18,6 @@
     <ItemGroup>
         <ProjectReference Include="./src/DGmjr.RegexDtoGenerator.csproj" />
         <ProjectReference Include="./Samples/DGmjr.RegexDtoGenerator.Samples.csproj" />
+        <ProjectReference Include="./Tests/RegexDtoGenerator.Tests.csproj" />
     </ItemGroup>
 </Project>
