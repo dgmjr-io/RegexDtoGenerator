@@ -21,8 +21,8 @@ internal record struct RegexDtoDeclarationTemplateModel
     public string Visibility { get; set; }
     public string Regex { get; set; }
     public RegexOptions RegexOptions { get; set; } =
-        Compiled | IgnoreCase | ExplicitCapture; 
-        // Default to Compiled, IgnoreCase, and ExplicitCapture
+        Compiled | IgnoreCase | ExplicitCapture;
+    // Default to Compiled, IgnoreCase, and ExplicitCapture
     public RegexDtoPropertyDeclarationModel[] Properties { get; set; }
     public string BaseType { get; set; }
     public string Members { get; set; }
