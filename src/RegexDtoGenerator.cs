@@ -224,15 +224,17 @@ public partial class RegexDtoGenerator : IIncrementalGenerator
                                                 : "",
                                         Members =
                                         $"""
-                            {RegexDtoParseDeclarationTemplate.Render(propertiesDeclarationModel)}
-                            {RegexDtoPropertiesDeclarationTemplate.Render(propertiesDeclarationModel)}
-                            {RegexDtoConstructorDeclarationTemplate.Render(new RegexDtoConstructorDeclarationModel
-                                        {
-                                            ParameterlessConstructorVisibility = isClass ? "protected" : "public",
-                                            ParameterizedConstructorVisibility = isClass ? "protected" : "public",
-                                            TypeName = typeName + "Base",
-                                            Properties = propertiesDeclarationModel.Properties
-                                        })}
+                            { RegexDtoParseDeclarationTemplate.Render(propertiesDeclarationModel) }
+                            { RegexDtoPropertiesDeclarationTemplate.Render(propertiesDeclarationModel) }
+                            {
+                                            RegexDtoConstructorDeclarationTemplate.Render(new RegexDtoConstructorDeclarationModel
+                                            {
+                                                ParameterlessConstructorVisibility = isClass ? "protected" : "public",
+                                                ParameterizedConstructorVisibility = isClass ? "protected" : "public",
+                                                TypeName = typeName + "Base",
+                                                Properties = propertiesDeclarationModel.Properties
+                                            })
+                                        }
                             """
                                     };
 
@@ -275,15 +277,17 @@ public partial class RegexDtoGenerator : IIncrementalGenerator
                                     ),
                                     BaseType = isClass ? typeName + "Base" : "",
                                     Members = $"""
-                            {(!isClass ? RegexDtoParseDeclarationTemplate.Render(propertiesDeclarationModel2) : "")}
-                            {(!isClass ? RegexDtoPropertiesDeclarationTemplate.Render(propertiesDeclarationModel2) : "")}
-                            {RegexDtoConstructorDeclarationTemplate.Render(new RegexDtoConstructorDeclarationModel
-                                    {
-                                        ParameterlessConstructorVisibility = "public",
-                                        ParameterizedConstructorVisibility = "public",
-                                        TypeName = typeName,
-                                        Properties = propertiesDeclarationModel2.Properties
-                                    })}
+                            { (!isClass ? RegexDtoParseDeclarationTemplate.Render(propertiesDeclarationModel2) : "") }
+                            { (!isClass ? RegexDtoPropertiesDeclarationTemplate.Render(propertiesDeclarationModel2) : "") }
+                            {
+                                        RegexDtoConstructorDeclarationTemplate.Render(new RegexDtoConstructorDeclarationModel
+                                        {
+                                            ParameterlessConstructorVisibility = "public",
+                                            ParameterizedConstructorVisibility = "public",
+                                            TypeName = typeName,
+                                            Properties = propertiesDeclarationModel2.Properties
+                                        })
+                                    }
                             """
                                 };
 
