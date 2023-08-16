@@ -176,7 +176,7 @@ public static partial class Constants
         {
             {{~ for property in properties ~}}
             {{~ if property.is_nullable ~}}
-            {{ property.name }} = match.Groups["{{ property.name }}"]?.Value is null ? null : ({{ property.type }}?)System.Convert.ChangeType(match.Groups["{{ property.name }}"]?.Value, typeof({{ property.type }})),
+            {{ property.name }} = string.IsNullOrEmpty(match.Groups["{{ property.name }}"]?.Value) ? null : ({{ property.type }}?)System.Convert.ChangeType(match.Groups["{{ property.name }}"]?.Value, typeof({{ property.type }})),
                 {{~ else ~}}
             {{ property.name }} = ({{ property.type }})System.Convert.ChangeType(match.Groups["{{ property.name }}"]?.Value, typeof({{ property.type }})),
                 {{~ end ~}}
