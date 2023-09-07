@@ -117,7 +117,7 @@ public static partial class Constants
             // public static partial Regex Regex();
             // #else
             private static readonly System.Text.RegularExpressions.Regex _regex = new System.Text.RegularExpressions.Regex(RegexString, RegexOptions);
-            public static System.Text.RegularExpressions.Regex Regex() => _regex;
+            public static {{ if base_type != "" }}new{{ end }} System.Text.RegularExpressions.Regex Regex() => _regex;
             // #endif
 
             {{ members }}
@@ -152,7 +152,7 @@ public static partial class Constants
             // public static partial System.Text.RegularExpressions.Regex Regex();
             // #else
             private static readonly System.Text.RegularExpressions.Regex _regex = new System.Text.RegularExpressions.Regex(RegexString, RegexOptions);
-            public static System.Text.RegularExpressions.Regex Regex() => _regex;
+            public static {{ if base_type != "" }}new{{ end }} System.Text.RegularExpressions.Regex Regex() => _regex;
             // #endif
 
             {{ members }}
@@ -166,22 +166,7 @@ public static partial class Constants
     """
     public static {{ type_name }} Parse(string s)
     {
-        var match = Regex().Match(s);
-        if (!match.Success)
-        {
-            throw new System.ArgumentException($"The string \"{s}\" does not match the regular expression \"{RegexString}\".", nameof(s));
-        }
-
-        return new {{ type_name }}
-        {
-            {{~ for property in properties ~}}
-            {{~ if property.is_nullable ~}}
-            {{ property.name }} = string.IsNullOrEmpty(match.Groups["{{ property.name }}"]?.Value) ? null : ({{ property.type }}?)System.Convert.ChangeType(match.Groups["{{ property.name }}"]?.Value, typeof({{ property.type }})),
-                {{~ else ~}}
-            {{ property.name }} = ({{ property.type }})System.Convert.ChangeType(match.Groups["{{ property.name }}"]?.Value, typeof({{ property.type }})),
-                {{~ end ~}}
-            {{~ end ~}}
-        };
+        return new {{ type_name }}(s);
     }
     """;
     public const string RegexDtoConstructorDeclaration =
@@ -198,7 +183,7 @@ public static partial class Constants
 
         {{~ for property in properties ~}}
         {{~ if property.is_nullable ~}}
-        {{ property.name }} = match.Groups["{{ property.name }}"]?.Value is null ? null : ({{ property.type }}?)System.Convert.ChangeType(match.Groups["{{ property.name }}"]?.Value, typeof({{ property.type }}));
+        {{ property.name }} = string.IsNullOrEmpty(match.Groups["{{ property.name }}"]?.Value) ? null : ({{ property.type }}?)System.Convert.ChangeType(match.Groups["{{ property.name }}"]?.Value, typeof({{ property.type }}));
         {{~ else ~}}
         {{ property.name }} = ({{ property.type }})System.Convert.ChangeType(match.Groups["{{ property.name }}"]?.Value, typeof({{ property.type }}));
         {{~ end ~}}
