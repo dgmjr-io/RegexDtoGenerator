@@ -24,7 +24,8 @@ using static Dgmjr.RegexDtoGenerator.Constants;
 public partial class RegexDtoGenerator : IIncrementalGenerator
 {
     private const string NewLine = "\n";
-    private const string RegexString = @"\(\?\<(?<Name>[a-zA-Z0-9]+)(?:\:(?<Type>[a-zA-Z0-9]+\??))?\>.*?\)";
+    private const string RegexString =
+        @"\(\?\<(?<Name>[a-zA-Z0-9]+)(?:\:(?<Type>[a-zA-Z0-9]+\??))?\>.*?\)";
     private const RegexOptions RegexOptions = Compiled | IgnoreCase | Multiline;
 
 #if NET7_0_OR_GREATER
@@ -32,6 +33,7 @@ public partial class RegexDtoGenerator : IIncrementalGenerator
     private static partial REx Regex();
 #else
     private static REx Regex() => _regex;
+
     private static readonly REx _regex = new(RegexString, RegexOptions);
 #endif
 
@@ -39,7 +41,11 @@ public partial class RegexDtoGenerator : IIncrementalGenerator
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-        using (Logger = new SourceGeneratorLogger<RegexDtoGenerator>((message, severity) => WriteLine($"{severity}: {message}")))
+        using (
+            Logger = new SourceGeneratorLogger<RegexDtoGenerator>(
+                (message, severity) => WriteLine($"{severity}: {message}")
+            )
+        )
         {
             try
             {
@@ -48,22 +54,24 @@ public partial class RegexDtoGenerator : IIncrementalGenerator
                         context.AddSource(
                             $"{RegexDtoAttributeName}.g.cs",
                             SourceText.From(
-                                HeaderTemplate.Render(new
-                                {
-                                    FileName = $"{RegexDtoAttributeName}.g.cs",
-                                    CreatedDate = UtcNow.ToString(DateFormat)
-                                })
-                                    +
-                                    RegexDtoAttributeDeclarationTemplate.Render(new
+                                HeaderTemplate.Render(
+                                    new
                                     {
                                         FileName = $"{RegexDtoAttributeName}.g.cs",
                                         CreatedDate = UtcNow.ToString(DateFormat)
                                     }
-                                ),
+                                )
+                                    + RegexDtoAttributeDeclarationTemplate.Render(
+                                        new
+                                        {
+                                            FileName = $"{RegexDtoAttributeName}.g.cs",
+                                            CreatedDate = UtcNow.ToString(DateFormat)
+                                        }
+                                    ),
                                 Encoding.UTF8
                             )
                         )
-                    );
+                );
 
                 try
                 {
@@ -73,41 +81,42 @@ public partial class RegexDtoGenerator : IIncrementalGenerator
                         (ctx, _) =>
                         {
                             var sources = new List<RegexDtoFileModel>();
-                            var attribute = ctx.Attributes.FirstOrDefault(a => a.AttributeClass.Name == RegexDtoAttributeName);
-                            var regex = attribute
-                                ?.ConstructorArguments
+                            var attribute = ctx.Attributes.FirstOrDefault(
+                                a => a.AttributeClass.Name == RegexDtoAttributeName
+                            );
+                            var regex = attribute?.ConstructorArguments
                                 .FirstOrDefault()
-                                .Value
-                                ?.ToString();
+                                .Value?.ToString();
                             if (!IsNullOrEmpty(regex))
                             {
                                 var matches = Regex().Matches(regex);
                                 var typeName = ctx.TargetSymbol.MetadataName;
-                                var namespaceName = ctx.TargetSymbol.ContainingNamespace.ToDisplayString();
+                                var namespaceName =
+                                    ctx.TargetSymbol.ContainingNamespace.ToDisplayString();
                                 var targetDataStructureType = ctx.TargetNode.Kind() switch
                                 {
                                     SyntaxKind.RecordStructDeclaration => "record struct",
                                     SyntaxKind.RecordDeclaration => "record class",
                                     SyntaxKind.StructDeclaration => "struct",
                                     SyntaxKind.ClassDeclaration => "class",
-                                    _ => throw new NotSupportedException($"The type {ctx.TargetNode.GetType().Name} is not supported.")
+                                    _
+                                        => throw new NotSupportedException(
+                                            $"The type {ctx.TargetNode.GetType().Name} is not supported."
+                                        )
                                 };
                                 var baseTypeSymbolKind = attribute?.ConstructorArguments
                                     .Skip(1)
                                     .FirstOrDefault()
                                     .Kind;
                                 var baseTypeValue = attribute.ConstructorArguments
-                                                    .Skip(1)
-                                                    .FirstOrDefault()
-                                                    .Value;
+                                    .Skip(1)
+                                    .FirstOrDefault()
+                                    .Value;
                                 var baseTypeValueType = baseTypeValue?.GetType();
-                                var baseType =
-                                        attribute
-                                            ?.ConstructorArguments
-                                            .Skip(1)
-                                            .FirstOrDefault()
-                                            .Value
-                                            ?.ToString();
+                                var baseType = attribute?.ConstructorArguments
+                                    .Skip(1)
+                                    .FirstOrDefault()
+                                    .Value?.ToString();
                                 Logger.LogInformation($"Found regex: {regex}.");
                                 Logger.LogInformation(
                                     "Base type symbol",
@@ -159,15 +168,16 @@ public partial class RegexDtoGenerator : IIncrementalGenerator
                                                     {
                                                         Name = m.Groups["Name"].Value,
                                                         Type = m.Groups["Type"].Value,
-                                                        IsNullable = m.Groups["Type"].Value.EndsWith("?")
+                                                        IsNullable = m.Groups[
+                                                            "Type"
+                                                        ].Value.EndsWith("?")
                                                     }
                                             )
                                             .ToArray()
                                     }
                                 );
 
-                                var baseTypeDiagnosticInfo =
-                                $"""
+                                var baseTypeDiagnosticInfo = $"""
                                 /*
                                     baseType: {baseType}
                                     baseTypeSymbolKind: {baseTypeSymbolKind}
@@ -200,12 +210,22 @@ public partial class RegexDtoGenerator : IIncrementalGenerator
                                                         new RegexDtoPropertyDeclarationModel(
                                                             Name: m.Groups["Name"].Value,
                                                             Type: IsNullOrEmpty(
-                                                                m.Groups["Type"].Value.Replace("?", "")
+                                                                m.Groups["Type"].Value.Replace(
+                                                                    "?",
+                                                                    ""
+                                                                )
                                                             )
                                                                 ? "string"
-                                                                : m.Groups["Type"].Value.Replace("?", ""),
-                                                            IsNullable: m.Groups["Type"].Value.Contains("?"),
-                                                            Overridability: isClass ? "virtual" : "",
+                                                                : m.Groups["Type"].Value.Replace(
+                                                                    "?",
+                                                                    ""
+                                                                ),
+                                                            IsNullable: m.Groups[
+                                                                "Type"
+                                                            ].Value.Contains("?"),
+                                                            Overridability: isClass
+                                                                ? "virtual"
+                                                                : "",
                                                             IsClass: isClass
                                                         )
                                                 )
@@ -218,15 +238,20 @@ public partial class RegexDtoGenerator : IIncrementalGenerator
                                         TypeName = typeName + "Base",
                                         Visibility = visibility,
                                         TargetDataStructureType = targetDataStructureType,
-                                        Regex = Regex().Replace(
-                                            regex,
-                                            m => m.Value.Replace(":" + m.Groups["Type"].Value, "")
-                                        ),
-                                        BaseType = !isClass || baseType != typeof(object).FullName
+                                        Regex = Regex()
+                                            .Replace(
+                                                regex,
+                                                m =>
+                                                    m.Value.Replace(
+                                                        ":" + m.Groups["Type"].Value,
+                                                        ""
+                                                    )
+                                            ),
+                                        BaseType =
+                                            !isClass || baseType != typeof(object).FullName
                                                 ? $"{baseType}"
                                                 : "",
-                                        Members =
-                                        $"""
+                                        Members = $"""
                                         {RegexDtoParseDeclarationTemplate.Render(propertiesDeclarationModel)}
                                         {RegexDtoPropertiesDeclarationTemplate.Render(propertiesDeclarationModel)}
                                         {RegexDtoConstructorDeclarationTemplate.Render(new RegexDtoConstructorDeclarationModel
@@ -239,7 +264,13 @@ public partial class RegexDtoGenerator : IIncrementalGenerator
                                         """
                                     };
 
-                                    sources.Add(new(RegexDtoDeclarationTemplate.Render(baseTypeModel), baseTypeModel.TypeName, baseTypeModel.NamespaceName));
+                                    sources.Add(
+                                        new(
+                                            RegexDtoDeclarationTemplate.Render(baseTypeModel),
+                                            baseTypeModel.TypeName,
+                                            baseTypeModel.NamespaceName
+                                        )
+                                    );
                                 }
 
                                 // if(isCla
@@ -257,8 +288,13 @@ public partial class RegexDtoGenerator : IIncrementalGenerator
                                                             m.Groups["Type"].Value.Replace("?", "")
                                                         )
                                                             ? "string"
-                                                            : m.Groups["Type"].Value.Replace("?", ""),
-                                                        IsNullable: m.Groups["Type"].Value.EndsWith("?"),
+                                                            : m.Groups["Type"].Value.Replace(
+                                                                "?",
+                                                                ""
+                                                            ),
+                                                        IsNullable: m.Groups["Type"].Value.EndsWith(
+                                                            "?"
+                                                        ),
                                                         Overridability: isClass ? "override" : "",
                                                         IsClass: isClass
                                                     )
@@ -272,10 +308,11 @@ public partial class RegexDtoGenerator : IIncrementalGenerator
                                     TypeName = typeName,
                                     Visibility = visibility,
                                     TargetDataStructureType = targetDataStructureType,
-                                    Regex = Regex().Replace(
-                                        regex,
-                                        m => m.Value.Replace(":" + m.Groups["Type"].Value, "")
-                                    ),
+                                    Regex = Regex()
+                                        .Replace(
+                                            regex,
+                                            m => m.Value.Replace(":" + m.Groups["Type"].Value, "")
+                                        ),
                                     BaseType = isClass ? typeName + "Base" : "",
                                     Members = $"""
                             {(!isClass ? RegexDtoParseDeclarationTemplate.Render(propertiesDeclarationModel2) : "")}
@@ -290,8 +327,20 @@ public partial class RegexDtoGenerator : IIncrementalGenerator
                             """
                                 };
 
-                                sources.Add(new(RegexDtoDeclarationTemplate.Render(typeModel), typeModel.TypeName, typeModel.NamespaceName));
-                                sources.Add(new(baseTypeDiagnosticInfo, $"{typeModel.TypeName}.{nameof(baseTypeDiagnosticInfo)}.g.cs", string.Empty));
+                                sources.Add(
+                                    new(
+                                        RegexDtoDeclarationTemplate.Render(typeModel),
+                                        typeModel.TypeName,
+                                        typeModel.NamespaceName
+                                    )
+                                );
+                                sources.Add(
+                                    new(
+                                        baseTypeDiagnosticInfo,
+                                        $"{typeModel.TypeName}.{nameof(baseTypeDiagnosticInfo)}.g.cs",
+                                        string.Empty
+                                    )
+                                );
                             }
                             return sources;
                         }
@@ -303,13 +352,19 @@ public partial class RegexDtoGenerator : IIncrementalGenerator
                         {
                             foreach (var source in sources)
                             {
-                                context.AddSource($"{source.TypeName}.cs",
-                                SourceText.From(HeaderTemplate.Render(new
-                                {
-                                    FileName = $"{source.TypeName}.cs",
-                                    CreatedDate = UtcNow.ToString(DateFormat)
-                                }) + source.Source,
-                                Encoding.UTF8));
+                                context.AddSource(
+                                    $"{source.TypeName}.cs",
+                                    SourceText.From(
+                                        HeaderTemplate.Render(
+                                            new
+                                            {
+                                                FileName = $"{source.TypeName}.cs",
+                                                CreatedDate = UtcNow.ToString(DateFormat)
+                                            }
+                                        ) + source.Source,
+                                        Encoding.UTF8
+                                    )
+                                );
                             }
                         }
                     );

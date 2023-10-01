@@ -32,10 +32,7 @@ public class SourceGeneratorLogger<TSourceGenerator> : IDisposable
     where TSourceGenerator : IIncrementalGenerator
 {
     private string Filename => /*Path.Combine(_filename ,*/
-        UtcNow.ToString("hh-mm-ss")
-        + "-"
-        + guid.NewGuid().ToString().Substring(0, 2)
-        + ".cs"; //);
+        UtcNow.ToString("hh-mm-ss") + "-" + guid.NewGuid().ToString().Substring(0, 2) + ".cs"; //);
     private readonly MemoryStream _ms = new();
     private readonly JsonWriterOptions _options = new() { Indented = true, SkipValidation = true };
     private Utf8JsonWriter _writer;

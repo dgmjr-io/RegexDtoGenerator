@@ -20,16 +20,29 @@ namespace Contacts
 #if NET7_0_OR_GREATER
         [System.Diagnostics.CodeAnalysis.StringSyntax("regex")]
 #endif
-        public const string RegexString = @"""BEGIN:VCARD(?:\r\n(FN=(?<FormattedName>\w+))?(?:\r\n(?<Version>VERSION(?<VersionVersion>(?<Majorint>\d+)\.(?<Minor>\d+))))?(?:
+        public const string RegexString =
+            @"""BEGIN:VCARD(?:\r\n(FN=(?<FormattedName>\w+))?(?:\r\n(?<Version>VERSION(?<VersionVersion>(?<Majorint>\d+)\.(?<Minor>\d+))))?(?:
 (?<Address>ADR;TYPE=(?<TypeAddressType>\w+):(?<StreetAddress>\w+);(?<Locality>\w+);(?<Region>\w+);(?<PostalCode>\w+);(?<Country>\w+)))?(?:
 (?<Birthday>BDAY(?<BirthdayDateOnly>(?<Yearint>\d{4})-(?<Month>\d{2})-(?<Day>\d{2})))))?
 END:VCARD""";
 
 #if NET7_0_OR_GREATER
-        [GeneratedRegex(RegexString, RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline | RegexOptions.RightToLeft | RegexOptions.Singleline)]
+        [GeneratedRegex(
+            RegexString,
+            RegexOptions.Compiled
+                | RegexOptions.CultureInvariant
+                | RegexOptions.ExplicitCapture
+                | RegexOptions.IgnoreCase
+                | RegexOptions.IgnorePatternWhitespace
+                | RegexOptions.Multiline
+                | RegexOptions.RightToLeft
+                | RegexOptions.Singleline
+        )]
         public static partial System.Text.RegularExpressions.Regex Regex();
 #else
-        private static readonly System.Text.RegularExpressions.Regex _regex = new System.Text.RegularExpressions.Regex(RegexString);
+        private static readonly System.Text.RegularExpressions.Regex _regex =
+            new System.Text.RegularExpressions.Regex(RegexString);
+
         public static System.Text.RegularExpressions.Regex Regex() => _regex;
 #endif
 
@@ -38,25 +51,38 @@ END:VCARD""";
             var match = Regex().Match(s);
             if (!match.Success)
             {
-                throw new System.ArgumentException($"The string \"{s}\" does not match the regular expression \"{RegexString}\".", nameof(s));
+                throw new System.ArgumentException(
+                    $"The string \"{s}\" does not match the regular expression \"{RegexString}\".",
+                    nameof(s)
+                );
             }
 
             return new VCard
             {
-                FormattedName = (string)System.Convert.ChangeType(match.Groups["FormattedName"]?.Value, typeof(string)),
-                Version = (string)System.Convert.ChangeType(match.Groups["Version"]?.Value, typeof(string)),
+                FormattedName = (string)
+                    System.Convert.ChangeType(match.Groups["FormattedName"]?.Value, typeof(string)),
+                Version = (string)
+                    System.Convert.ChangeType(match.Groups["Version"]?.Value, typeof(string)),
                 Minor = (int)System.Convert.ChangeType(match.Groups["Minor"]?.Value, typeof(int)),
-                Address = (string)System.Convert.ChangeType(match.Groups["Address"]?.Value, typeof(string)),
-                StreetAddress = (string)System.Convert.ChangeType(match.Groups["StreetAddress"]?.Value, typeof(string)),
-                Locality = (string)System.Convert.ChangeType(match.Groups["Locality"]?.Value, typeof(string)),
-                Region = (string)System.Convert.ChangeType(match.Groups["Region"]?.Value, typeof(string)),
-                PostalCode = (int)System.Convert.ChangeType(match.Groups["PostalCode"]?.Value, typeof(int)),
-                Country = (string)System.Convert.ChangeType(match.Groups["Country"]?.Value, typeof(string)),
-                Birthday = (string)System.Convert.ChangeType(match.Groups["Birthday"]?.Value, typeof(string)),
+                Address = (string)
+                    System.Convert.ChangeType(match.Groups["Address"]?.Value, typeof(string)),
+                StreetAddress = (string)
+                    System.Convert.ChangeType(match.Groups["StreetAddress"]?.Value, typeof(string)),
+                Locality = (string)
+                    System.Convert.ChangeType(match.Groups["Locality"]?.Value, typeof(string)),
+                Region = (string)
+                    System.Convert.ChangeType(match.Groups["Region"]?.Value, typeof(string)),
+                PostalCode = (int)
+                    System.Convert.ChangeType(match.Groups["PostalCode"]?.Value, typeof(int)),
+                Country = (string)
+                    System.Convert.ChangeType(match.Groups["Country"]?.Value, typeof(string)),
+                Birthday = (string)
+                    System.Convert.ChangeType(match.Groups["Birthday"]?.Value, typeof(string)),
                 Month = (int)System.Convert.ChangeType(match.Groups["Month"]?.Value, typeof(int)),
                 Day = (int)System.Convert.ChangeType(match.Groups["Day"]?.Value, typeof(int)),
             };
         }
+
         public virtual string FormattedName { get; set; }
         public virtual string Version { get; set; }
         public virtual int Minor { get; set; }
@@ -77,19 +103,31 @@ END:VCARD""";
             var match = Regex().Match(s);
             if (!match.Success)
             {
-                throw new System.ArgumentException($"The string \"{s}\" does not match the regular expression \"{RegexString}\".", nameof(s));
+                throw new System.ArgumentException(
+                    $"The string \"{s}\" does not match the regular expression \"{RegexString}\".",
+                    nameof(s)
+                );
             }
 
-            FormattedName = (string)System.Convert.ChangeType(match.Groups["FormattedName"]?.Value, typeof(string));
-            Version = (string)System.Convert.ChangeType(match.Groups["Version"]?.Value, typeof(string));
+            FormattedName = (string)
+                System.Convert.ChangeType(match.Groups["FormattedName"]?.Value, typeof(string));
+            Version = (string)
+                System.Convert.ChangeType(match.Groups["Version"]?.Value, typeof(string));
             Minor = (int)System.Convert.ChangeType(match.Groups["Minor"]?.Value, typeof(int));
-            Address = (string)System.Convert.ChangeType(match.Groups["Address"]?.Value, typeof(string));
-            StreetAddress = (string)System.Convert.ChangeType(match.Groups["StreetAddress"]?.Value, typeof(string));
-            Locality = (string)System.Convert.ChangeType(match.Groups["Locality"]?.Value, typeof(string));
-            Region = (string)System.Convert.ChangeType(match.Groups["Region"]?.Value, typeof(string));
-            PostalCode = (int)System.Convert.ChangeType(match.Groups["PostalCode"]?.Value, typeof(int));
-            Country = (string)System.Convert.ChangeType(match.Groups["Country"]?.Value, typeof(string));
-            Birthday = (string)System.Convert.ChangeType(match.Groups["Birthday"]?.Value, typeof(string));
+            Address = (string)
+                System.Convert.ChangeType(match.Groups["Address"]?.Value, typeof(string));
+            StreetAddress = (string)
+                System.Convert.ChangeType(match.Groups["StreetAddress"]?.Value, typeof(string));
+            Locality = (string)
+                System.Convert.ChangeType(match.Groups["Locality"]?.Value, typeof(string));
+            Region = (string)
+                System.Convert.ChangeType(match.Groups["Region"]?.Value, typeof(string));
+            PostalCode = (int)
+                System.Convert.ChangeType(match.Groups["PostalCode"]?.Value, typeof(int));
+            Country = (string)
+                System.Convert.ChangeType(match.Groups["Country"]?.Value, typeof(string));
+            Birthday = (string)
+                System.Convert.ChangeType(match.Groups["Birthday"]?.Value, typeof(string));
             Month = (int)System.Convert.ChangeType(match.Groups["Month"]?.Value, typeof(int));
             Day = (int)System.Convert.ChangeType(match.Groups["Day"]?.Value, typeof(int));
         }
@@ -104,20 +142,31 @@ namespace Contacts
 #if NET7_0_OR_GREATER
         [System.Diagnostics.CodeAnalysis.StringSyntax("regex")]
 #endif
-        public const string RegexString = @"""BEGIN:VCARD(?:\r\n(FN=(?<FormattedName>\w+))?(?:\r\n(?<Version>VERSION(?<VersionVersion>(?<Majorint>\d+)\.(?<Minor>\d+))))?(?:
+        public const string RegexString =
+            @"""BEGIN:VCARD(?:\r\n(FN=(?<FormattedName>\w+))?(?:\r\n(?<Version>VERSION(?<VersionVersion>(?<Majorint>\d+)\.(?<Minor>\d+))))?(?:
 (?<Address>ADR;TYPE=(?<TypeAddressType>\w+):(?<StreetAddress>\w+);(?<Locality>\w+);(?<Region>\w+);(?<PostalCode>\w+);(?<Country>\w+)))?(?:
 (?<Birthday>BDAY(?<BirthdayDateOnly>(?<Yearint>\d{4})-(?<Month>\d{2})-(?<Day>\d{2})))))?
 END:VCARD""";
 
 #if NET7_0_OR_GREATER
-        [GeneratedRegex(RegexString, RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline | RegexOptions.RightToLeft | RegexOptions.Singleline)]
+        [GeneratedRegex(
+            RegexString,
+            RegexOptions.Compiled
+                | RegexOptions.CultureInvariant
+                | RegexOptions.ExplicitCapture
+                | RegexOptions.IgnoreCase
+                | RegexOptions.IgnorePatternWhitespace
+                | RegexOptions.Multiline
+                | RegexOptions.RightToLeft
+                | RegexOptions.Singleline
+        )]
         public static partial System.Text.RegularExpressions.Regex Regex();
 #else
-        private static readonly System.Text.RegularExpressions.Regex _regex = new System.Text.RegularExpressions.Regex(RegexString);
+        private static readonly System.Text.RegularExpressions.Regex _regex =
+            new System.Text.RegularExpressions.Regex(RegexString);
+
         public static System.Text.RegularExpressions.Regex Regex() => _regex;
 #endif
-
-
 
         public VCard() { }
 
@@ -126,19 +175,31 @@ END:VCARD""";
             var match = Regex().Match(s);
             if (!match.Success)
             {
-                throw new System.ArgumentException($"The string \"{s}\" does not match the regular expression \"{RegexString}\".", nameof(s));
+                throw new System.ArgumentException(
+                    $"The string \"{s}\" does not match the regular expression \"{RegexString}\".",
+                    nameof(s)
+                );
             }
 
-            FormattedName = (string)System.Convert.ChangeType(match.Groups["FormattedName"]?.Value, typeof(string));
-            Version = (string)System.Convert.ChangeType(match.Groups["Version"]?.Value, typeof(string));
+            FormattedName = (string)
+                System.Convert.ChangeType(match.Groups["FormattedName"]?.Value, typeof(string));
+            Version = (string)
+                System.Convert.ChangeType(match.Groups["Version"]?.Value, typeof(string));
             Minor = (int)System.Convert.ChangeType(match.Groups["Minor"]?.Value, typeof(int));
-            Address = (string)System.Convert.ChangeType(match.Groups["Address"]?.Value, typeof(string));
-            StreetAddress = (string)System.Convert.ChangeType(match.Groups["StreetAddress"]?.Value, typeof(string));
-            Locality = (string)System.Convert.ChangeType(match.Groups["Locality"]?.Value, typeof(string));
-            Region = (string)System.Convert.ChangeType(match.Groups["Region"]?.Value, typeof(string));
-            PostalCode = (int)System.Convert.ChangeType(match.Groups["PostalCode"]?.Value, typeof(int));
-            Country = (string)System.Convert.ChangeType(match.Groups["Country"]?.Value, typeof(string));
-            Birthday = (string)System.Convert.ChangeType(match.Groups["Birthday"]?.Value, typeof(string));
+            Address = (string)
+                System.Convert.ChangeType(match.Groups["Address"]?.Value, typeof(string));
+            StreetAddress = (string)
+                System.Convert.ChangeType(match.Groups["StreetAddress"]?.Value, typeof(string));
+            Locality = (string)
+                System.Convert.ChangeType(match.Groups["Locality"]?.Value, typeof(string));
+            Region = (string)
+                System.Convert.ChangeType(match.Groups["Region"]?.Value, typeof(string));
+            PostalCode = (int)
+                System.Convert.ChangeType(match.Groups["PostalCode"]?.Value, typeof(int));
+            Country = (string)
+                System.Convert.ChangeType(match.Groups["Country"]?.Value, typeof(string));
+            Birthday = (string)
+                System.Convert.ChangeType(match.Groups["Birthday"]?.Value, typeof(string));
             Month = (int)System.Convert.ChangeType(match.Groups["Month"]?.Value, typeof(int));
             Day = (int)System.Convert.ChangeType(match.Groups["Day"]?.Value, typeof(int));
         }

@@ -11,18 +11,20 @@
  */
 
 namespace Dgmjr.RegexDtoGenerator;
+
 using Dgmjr.RegexDtoGenerator.Models;
 
 internal record struct RegexDtoDeclarationTemplateModel
 {
     public RegexDtoDeclarationTemplateModel() { }
+
     public string NamespaceName { get; set; }
     public string TargetDataStructureType { get; set; }
     public string TypeName { get; set; }
     public string Visibility { get; set; }
     public string Regex { get; set; }
-    public RegexOptions RegexOptions { get; set; } =
-        Compiled | IgnoreCase | ExplicitCapture;
+    public RegexOptions RegexOptions { get; set; } = Compiled | IgnoreCase | ExplicitCapture;
+
     // Default to Compiled, IgnoreCase, and ExplicitCapture
     public RegexDtoPropertyDeclarationModel[] Properties { get; set; }
     public string BaseType { get; set; }
