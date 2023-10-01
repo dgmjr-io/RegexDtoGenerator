@@ -1,6 +1,11 @@
 namespace Foo;
 
-public abstract record class RoomBase
+public interface IRoom
+{
+    Uri? Url { get; }
+}
+
+public abstract record class RoomBase : IRoom
 {
     public virtual Uri? Url { get; }
 }
@@ -11,13 +16,20 @@ public abstract record class RoomBase
 )]
 public partial record class ZoomRoomDtoClass
 {
-    public override Uri Url => new Uri($"https://zoom.us/j/{RoomNumber}{(!string.IsNullOrEmpty(Password) ? $"?pwd={Password}" : "")}");
+    public override Uri Url =>
+        new Uri(
+            $"https://zoom.us/j/{RoomNumber}{(!string.IsNullOrEmpty(Password) ? $"?pwd={Password}" : "")}"
+        );
 }
 
 [RegexDto(
-    @"^https://zoom.us/j/(?<RoomNumber:int>[0-9]{10,11})\?.*(?:pwd=(?<Password:string?>[a-zA-Z0-9]{6,8}))?$"
+    @"^https://zoom.us/j/(?<RoomNumber:int>[0-9]{10,11})\?.*(?:pwd=(?<Password:string?>[a-zA-Z0-9]{6,8}))?$",
+    typeof(IRoom)
 )]
 public partial record struct ZoomRoom
 {
-    public Uri Url => new Uri($"https://zoom.us/j/{RoomNumber}{(!string.IsNullOrEmpty(Password) ? $"?pwd={Password}" : "")}");
+    public Uri Url =>
+        new Uri(
+            $"https://zoom.us/j/{RoomNumber}{(!string.IsNullOrEmpty(Password) ? $"?pwd={Password}" : "")}"
+        );
 }
