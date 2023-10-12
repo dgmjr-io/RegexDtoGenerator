@@ -18,7 +18,7 @@ public partial record class ZoomRoomDtoClass
 {
     public override Uri Url =>
         new Uri(
-            $"https://zoom.us/j/{RoomNumber}{(!string.IsNullOrEmpty(Password) ? $"?pwd={Password}" : "")}"
+            $"https://zoom.us/j/{RoomNumber}{(!IsNullOrEmpty(Password) ? $"?pwd={Password}" : "")}"
         );
 }
 
@@ -30,6 +30,6 @@ public partial record struct ZoomRoom
 {
     public Uri Url =>
         new Uri(
-            $"https://zoom.us/j/{RoomNumber}{(!string.IsNullOrEmpty(Password) ? $"?pwd={Password}" : "")}"
+            $"https://zoom.us/j/{RoomNumber}{(!IsNullOrEmpty(Password) ? $"?pwd={Password}" : "")}"
         );
 }

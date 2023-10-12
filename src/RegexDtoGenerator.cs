@@ -30,11 +30,11 @@ public partial class RegexDtoGenerator : IIncrementalGenerator
 
 #if NET7_0_OR_GREATER
     [GeneratedRegex(RegexString, RegexOptions)]
-    private static partial REx Regex();
+    private static partial Regex Regex();
 #else
-    private static REx Regex() => _regex;
+    private static Regex Regex() => _regex;
 
-    private static readonly REx _regex = new(RegexString, RegexOptions);
+    private static readonly Regex _regex = new(RegexString, RegexOptions);
 #endif
 
     private SourceGeneratorLogger<RegexDtoGenerator> Logger { get; set; }
