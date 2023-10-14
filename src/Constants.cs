@@ -58,150 +58,178 @@ public static partial class Constants
     public const string GeneratedCodeAttributesList =
         $"[GeneratedCode(\"{ThisAssemblyName}\", \"{RegexDtoGeneratorVersion}\"), CompilerGenerated]";
 
-    public const string RegexDtoAttributeDeclaration = $$$""""
+public const string RegexDtoAttributeDeclaration = $$$""""
     [AttributeUsage(@Class | @Struct, Inherited = false, AllowMultiple = false)]
-    {{{GeneratedCodeAttributesList}}}
+    {{{GeneratedCodeAttributesList
+}}}
     internal sealed class RegexDtoAttribute(
-        #if NET7_0_OR_GREATER
+#if NET7_0_OR_GREATER
         [StringSyntax(SS.Regex)]
-        #endif
-        string Regex, System.Type? BaseType = null, RegexOptions RegexOptions = RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline) : System.Attribute
+#endif
+        string Regex, System.Type ? BaseType = null, RegexOptions RegexOptions = RegexOptions.Compiled | RegexOptions.CultureInvariant | RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline) : System.Attribute
     {
-    }
-    """";
+}
+"""";
 
-    public const string RegexDtoBaseTypeDeclaration = $$$""""
+public const string RegexDtoBaseTypeDeclaration = $$$""""
     namespace {{ namespace_name }}
     {
-        {{{GeneratedCodeAttributesList}}}
-        {{~ visibility }} partial abstract {{ target_data_structure_type }} {{ type_name }}Base {{ if base_type != "" }} : {{ base_type ~}}{{ end }}
-        {
-            /// <summary>The default <see cref="RegexOptions" /></summary>
-            /// <value>(RegexOptions)({{ regex_options | string.replace ","  " | " }})</value>
-            const RegexOptions RegexOptions = (RegexOptions)({{ regex_options | string.replace ","  " | " }});
+    { { { GeneratedCodeAttributesList} } }
+    { { ~visibility } }
+    partial abstract
+{ { target_data_structure_type } }
+{ { type_name } }
+Base
+{ { if base_type != "" } } : { { base_type ~} }
+{ { end } }
+{
+    /// <summary>The default <see cref="RegexOptions" /></summary>
+    /// <value>(RegexOptions)({{ regex_options | string.replace ","  " | " }})</value>
+    const RegexOptions RegexOptions = (RegexOptions)({ { regex_options | string.replace ","  " | " } });
 
             #if NET7_0_OR_GREATER
             [StringSyntax(SS.Regex)]
-            #endif
-            public const string RegexString = @"""{{ regex }}""";
+#endif
+public const string RegexString = @"""{{ regex }}""";
 
-            #if NET7_0_OR_GREATER
+#if NET7_0_OR_GREATER
             [GeneratedRegex(RegexString, RegexOptions)]
             public static partial Regex Regex();
-            #else
-            private static readonly Regex _regex = new (RegexString, RegexOptions);
-            /// <summary>The <see cref="Regex" /> that will be used to validate and recognize the DTO</summary>
-            public static Regex Regex() => _regex;
-            #endif
+#else
+private static readonly Regex _regex = new(RegexString, RegexOptions);
+/// <summary>The <see cref="Regex" /> that will be used to validate and recognize the DTO</summary>
+public static Regex Regex() => _regex;
+#endif
 
-            {{ members }}
+{ { members } }
         }
 
-        protected{{ type_name }}Base()
+        protected
+{ { type_name } }
+Base()
         {
-        }
+}
     }
     """";
 
-    public const string RegexDtoTypeDeclaration = $$$$""""
+public const string RegexDtoTypeDeclaration = $$$$""""
     namespace {{ namespace_name }}
     {
-        {{{{GeneratedCodeAttributesList}}}}
-        {{ visibility }} partial {{ target_data_structure_type }} {{ type_name }} {{ if base_type != "" }} : {{ base_type ~}}{{ end }}
-        {
-            const RegexOptions RegexOptions = (RegexOptions)({{ regex_options | string.replace "," " | " }});
+    { { { { GeneratedCodeAttributesList} } } }
+    { { visibility } }
+    partial { { target_data_structure_type } }
+    { { type_name } }
+    { { if base_type != "" } } : { { base_type ~} }
+    { { end } }
+    {
+        const RegexOptions RegexOptions = (RegexOptions)({ { regex_options | string.replace "," " | " } });
 
             public string OriginalString { get; init; }
 
-            #if NET7_0_OR_GREATER
+#if NET7_0_OR_GREATER
             [StringSyntax(SS.Regex)]
-            #endif
-            /// <summary>The regex string that will be used to validate and recognize the DTO</summary>
-            public const string RegexString = @"{{ regex }}";
+#endif
+/// <summary>The regex string that will be used to validate and recognize the DTO</summary>
+public const string RegexString = @"{{ regex }}";
 
-            #if NET7_0_OR_GREATER
+#if NET7_0_OR_GREATER
             [GeneratedRegex(RegexString, RegexOptions)]
             public static partial Regex Regex();
-            #else
-            private static readonly Regex _regex = new (RegexString, RegexOptions);
-            /// <summary>The <see cref="Regex" /> that will be used to validate and recognize the DTO</summary>
-            public static {{ if base_type != "" }}new{{ end }} Regex Regex() => _regex;
-            #endif
+#else
+private static readonly Regex _regex = new(RegexString, RegexOptions);
+/// <summary>The <see cref="Regex" /> that will be used to validate and recognize the DTO</summary>
+public static
+{ { if base_type != "" } }
+new {{ end }} Regex Regex() => _regex;
+#endif
 
-            {{ members }}
+{ { members } }
         }
     }
     """";
 
-    public const string RegexDtoParseDeclaration = """
+public const string RegexDtoParseDeclaration = """
     /// <summary>Parses the <paramref name="s">string</paramref> into an instance of <see cref="{{ type_name }}">the DTO</see></summary>
     /// <param name="s">The <see langword="string" /> to parse</param>
     /// <returns>The parsed <see cref="{{ type_name }}">DTO<see></returns>
-    public static {{ type_name }} Parse(string s)
+public static
+{ { type_name } }
+Parse(string s)
     {
-        return new {{ type_name }}(s);
+    return new {{ type_name }
+} (s);
     }
     """;
 
     public const string RegexDtoConstructorDeclaration = """
     /// <summary>Instantiates a new, empty <see cref="{{ type_name }}">DTO</see></summary>
-    {{ parameterless_constructor_visibility }} {{ type_name }} () { }
+    { { parameterless_constructor_visibility } }
+{ { type_name } } () { }
 
-    /// <summary>Instantiates a new <see cref="{{ type_name }}">DTO</see> and parses the <paramref name="s">string</paramref></summary>
-    {{ parameterized_constructor_visibility }} {{ type_name }} (string s)
+/// <summary>Instantiates a new <see cref="{{ type_name }}">DTO</see> and parses the <paramref name="s">string</paramref></summary>
+{ { parameterized_constructor_visibility } }
+{ { type_name } } (string s)
     {
-        var match = Regex().Match(s);
-        if (!match.Success)
-        {
-            throw new ArgumentException($"The string \"{s}\" does not match the regular expression \"{RegexString}\".", nameof(s));
-        }
-
-        {{~ for property in properties ~}}
-        {{~ if property.is_nullable ~}}
-        {{ property.name }} = string.IsNullOrEmpty(match.Groups["{{ property.name }}"]?.Value) ? null : ({{ property.type }}?)System.Convert.ChangeType(match.Groups["{{ property.name }}"]?.Value, typeof({{ property.type }}));
-        {{~ else ~}}
-        {{ property.name }} = ({{ property.type }})System.Convert.ChangeType(match.Groups["{{ property.name }}"]?.Value, typeof({{ property.type }}));
-        {{~ end ~}}
-        {{~ end ~}}
-
-        OriginalString = s;
+    var match = Regex().Match(s);
+    if (!match.Success)
+    {
+        throw new ArgumentException($"The string \"{s}\" does not match the regular expression \"{RegexString}\".", nameof(s));
     }
-    """;
+
+    { { ~ for property in properties ~} }
+    { { ~ if property.is_nullable ~} }
+    { { property.name } } = string.IsNullOrEmpty(match.Groups["{{ property.name }}"]?.Value) ? null : ({ { property.type } }?)System.Convert.ChangeType(match.Groups["{{ property.name }}"]?.Value, typeof({ { property.type } }));
+    { { ~ else ~} }
+    { { property.name } } = ({ { property.type } })System.Convert.ChangeType(match.Groups["{{ property.name }}"]?.Value, typeof({ { property.type } }));
+    { { ~end ~} }
+    { { ~end ~} }
+
+    OriginalString = s;
+}
+""";
 
     public const string RegexDtoPropertiesDeclaration = """
-    {{~ for property in properties ~}}
-    {{~ if property.is_nullable ~}}
-    public {{ property.overridability }} {{ property.type }}? {{ property.name }} { get; set; }
-    {{~ else ~}}
-    public {{ property.overridability }} {{ property.type }} {{ property.name }} { get; set; }
-    {{~end ~}}
-    {{~end ~}}
-    """;
+    { { ~ for property in properties ~} }
+{ { ~ if property.is_nullable ~} }
+public
+{ { property.overridability } }
+{ { property.type } }?
+{ { property.name } }
+{ get; set; }
+{ { ~ else ~} }
+public
+{ { property.overridability } }
+{ { property.type } }
+{ { property.name } }
+{ get; set; }
+{ { ~end ~} }
+{ { ~end ~} }
+""";
 
     public static readonly Template RegexDtoDeclarationTemplate = Parse(
         RegexDtoTypeDeclaration,
         nameof(RegexDtoTypeDeclaration)
     );
 
-    public static readonly Template RegexDtoParseDeclarationTemplate = Parse(
-        RegexDtoParseDeclaration,
-        nameof(RegexDtoParseDeclaration)
-    );
+public static readonly Template RegexDtoParseDeclarationTemplate = Parse(
+    RegexDtoParseDeclaration,
+    nameof(RegexDtoParseDeclaration)
+);
 
-    public static readonly Template RegexDtoPropertiesDeclarationTemplate = Parse(
-        RegexDtoPropertiesDeclaration,
-        nameof(RegexDtoPropertiesDeclaration)
-    );
+public static readonly Template RegexDtoPropertiesDeclarationTemplate = Parse(
+    RegexDtoPropertiesDeclaration,
+    nameof(RegexDtoPropertiesDeclaration)
+);
 
-    public static readonly Template RegexDtoConstructorDeclarationTemplate = Parse(
-        RegexDtoConstructorDeclaration,
-        nameof(RegexDtoConstructorDeclaration)
-    );
+public static readonly Template RegexDtoConstructorDeclarationTemplate = Parse(
+    RegexDtoConstructorDeclaration,
+    nameof(RegexDtoConstructorDeclaration)
+);
 
-    public static readonly Template RegexDtoAttributeDeclarationTemplate = Parse(
-        RegexDtoAttributeDeclaration,
-        nameof(RegexDtoAttributeDeclaration)
-    );
+public static readonly Template RegexDtoAttributeDeclarationTemplate = Parse(
+    RegexDtoAttributeDeclaration,
+    nameof(RegexDtoAttributeDeclaration)
+);
 
-    public static readonly Template HeaderTemplate = Parse(Header, nameof(Header));
+public static readonly Template HeaderTemplate = Parse(Header, nameof(Header));
 }
