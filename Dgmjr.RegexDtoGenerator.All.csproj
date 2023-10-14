@@ -1,0 +1,23 @@
+<!--
+ * RegexDtoGenerator.All.csproj
+ *
+ *   Created: 2023-06-18-09:55:17
+ *   Modified: 2023-06-18-09:55:17
+ *
+ *   Author: David G. Moore, Jr. <david@dgmjr.io>
+ *
+ *   Copyright © 2022 - 2023 David G. Moore, Jr., All Rights Reserved
+ *      License: MIT (https://opensource.org/licenses/MIT)
+-->
+
+<Project Sdk="Microsoft.NET.Sdk">
+  <Sdk Name="MetapackageSdk" />
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="./src/DGmjr.RegexDtoGenerator.csproj" />
+    <ProjectReference Include="./Samples/DGmjr.RegexDtoGenerator.Samples.csproj" />
+    <ProjectReference Include="./Tests/Dgmjr.RegexDtoGenerator.Tests.csproj" />
+  </ItemGroup>
+</Project>

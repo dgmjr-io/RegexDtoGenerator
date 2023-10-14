@@ -7,9 +7,9 @@ using System.Runtime.CompilerServices;
  *   Created: 2022-12-24-01:58:25
  *   Modified: 2022-12-24-01:58:26
  *
- *   Author: David G. Mooore, Jr. <david@dgmjr.io>
+ *   Author: David G. Moore, Jr. <david@dgmjr.io>
  *
- *   Copyright © 2022-2023 David G. Mooore, Jr., All Rights Reserved
+ *   Copyright © 2022-2023 David G. Moore, Jr., All Rights Reserved
  *      License: MIT (https://opensource.org/licenses/MIT)
  */
 namespace Dgmjr.CodeGeneration.Logging;
@@ -26,21 +26,18 @@ using static System.String;
 using static System.Text.Encoding;
 using static System.Text.Json.JsonSerializer;
 
-public delegate void AddSource(string hintName, string sourceText);
+using AddSource = Action<string, string>; //string hintName, string sourceText);
 
-public class SourceGeneratorLogger<TSourceGenerator> : IDisposable
+public class SourceGeneratorLogger<TSourceGenerator>(AddSource addSource) : IDisposable
     where TSourceGenerator : IIncrementalGenerator
 {
-    private string Filename => /*Path.Combine(_filename ,*/
-        UtcNow.ToString("hh-mm-ss") + "-" + guid.NewGuid().ToString().Substring(0, 2) + ".cs"; //);
+    private static string Filename =>
+        UtcNow.ToString("hh-mm-ss") + "-" + guid.NewGuid().ToString().Substring(0, 2) + ".cs";
     private readonly MemoryStream _ms = new();
     private readonly JsonWriterOptions _options = new() { Indented = true, SkipValidation = true };
     private Utf8JsonWriter _writer;
     private Utf8JsonWriter Writer => _writer ??= new Utf8JsonWriter(_ms, _options);
-
-    public SourceGeneratorLogger(AddSource addSource) => AddSource = (_, _) => { };
-
-    protected AddSource AddSource { get; }
+    protected AddSource AddSource { get; } = addSource;
 
     protected virtual Utf8JsonWriter OpenWriter() => Writer;
 

@@ -9,6 +9,5 @@ public record struct RegexDtoFileModel(
     string? CreatedDate = null
 )
 {
-    public string CreatedDate { get; } =
-        CreatedDate ?? DateTimeOffset.UtcNow.ToString(Constants.DateFormat);
+    public string CreatedDate { get; } = CreatedDate ?? UtcNow.ToString(Constants.DateFormat);
 }

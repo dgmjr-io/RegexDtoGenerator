@@ -1,39 +1,50 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <Title>DGMJR-IO Regex DTO Generator</Title>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <Description>Generates DTOs from regular expressions</Description>
-        <DefineConstants>$(DefineConstants);SCRIBAN_SIGNED;SCRIBAN_PUBLIC</DefineConstants>
-        <SlnGenSolutionFolder>codegen</SlnGenSolutionFolder>
-        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-    </PropertyGroup>
-    <ItemGroup>
-        <SourceCodeReference Include="Dgmjr.CodeGeneration.Constants-Scriban.Bundled" />
-        <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
-        <PackageReference Include="Microsoft.CodeAnalysis.Common" />
-        <!-- <PackageReference Include="System.Text.Json.Usings" /> -->
-        <PackageReference Include="System.Text.Json" />
-        <PackageReference Include="Microsoft.CSharp" PrivateAssets="All" />
-        <PackageReference Include="System.Text.RegularExpressions.Usings" />
-        <PackageReference Include="ThisAssembly.AssemblyInfo" />
-        <PackageReference Include="ThisAssembly.Project" />
-        <PackageReference Include="System.Usings" />
-    </ItemGroup>
+﻿<!--
+ * Dgmjr.RegexDtoGenerator.csproj
+ *
+ *   Created: 2023-10-12-03:14:49
+ *   Modified: 2023-10-13-07:01:25
+ *
+ *   Author: David G. Moore, Jr. <david@dgmjr.io>
+ *
+ *   Copyright © 2022 - 2023 David G. Moore, Jr., All Rights Reserved
+ *      License: MIT (https://opensource.org/licenses/MIT)
+-->
 
-    <ItemGroup>
-        <Compile Remove="./Samples/**/*" />
-        <Using Include="System.Text.RegularExpressions.RegexOptions" Alias="Rxo" />
-        <Using Include="System.Text.RegularExpressions.RegexOptions" Static="true" />
-        <Using Include="System.Text.RegularExpressions.Regex" Alias="REx" />
-        <Using Include="System.DateTimeOffset" Static="true" />
-    </ItemGroup>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Title>DGMJR-IO Regex DTO Generator</Title>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>Generates DTOs from regular expressions</Description>
+    <DefineConstants>$(DefineConstants);SCRIBAN_SIGNED;SCRIBAN_PUBLIC</DefineConstants>
+    <SlnGenSolutionFolder>codegen</SlnGenSolutionFolder>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Common" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" />
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" />
+    <PackageReference Include="Microsoft.CSharp" PrivateAssets="All" />
+    <PackageReference Include="Scriban.Signed" />
+    <PackageReference Include="System.Text.Json" />
+    <PackageReference Include="ThisAssembly.AssemblyInfo" />
+    <PackageReference Include="ThisAssembly.Project" />
+    <UsingsPackageReference Include="System.Text.RegularExpressions.Usings" />
+    <UsingsPackageReference Include="System.Usings" />
+  </ItemGroup>
 
-    <PropertyGroup>
-        <IncludeBuildOutput>false</IncludeBuildOutput>
-    </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="./Samples/**/*" />
+    <Using Include="System.Text.RegularExpressions.RegexOptions" Alias="Rxo" />
+    <Using Include="System.Text.RegularExpressions.RegexOptions" Static="true" />
+    <Using Include="System.Text.RegularExpressions.Regex" Alias="REx" />
+    <Using Include="System.DateTimeOffset" Static="true" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <PackageFile Include="$(OutputPath)\$(AssemblyName).dll" PackagePath="analyzers/dotnet/cs/$(TargetFramework)/$(AssemblyName).dll" Visible="false" />
-    </ItemGroup>
+  <PropertyGroup>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageFile Include="$(OutputPath)\$(AssemblyName).dll" PackagePath="analyzers/dotnet/cs/$(TargetFramework)/$(AssemblyName).dll" Visible="false" />
+  </ItemGroup>
 </Project>

@@ -20,25 +20,46 @@ using static System.DateTimeOffset;
 using static System.Text.RegularExpressions.RegexOptions;
 using static Dgmjr.RegexDtoGenerator.Constants;
 
+/// <summary>
+/// The main class for the RegexDtoGenerator.
+/// Implements the IIncrementalGenerator interface.
+/// </summary>
 [Generator]
 public partial class RegexDtoGenerator : IIncrementalGenerator
 {
+    /// <summary>
+    /// The regular expression string used to match named groups in a regular expression.
+    /// </summary>
     private const string NewLine = "\n";
+
+    /// <summary>
+    /// The regular expression options used when matching named groups in a regular expression.
+    /// </summary>
     private const string RegexString =
         @"\(\?\<(?<Name>[a-zA-Z0-9]+)(?:\:(?<Type>[a-zA-Z0-9]+\??))?\>.*?\)";
-    private const RegexOptions RegexOptions = Compiled | IgnoreCase | Multiline;
+
+    private const Rxo RegexOptions = Compiled | IgnoreCase | Multiline;
 
 #if NET7_0_OR_GREATER
     [GeneratedRegex(RegexString, RegexOptions)]
-    private static partial Regex Regex();
+    private static partial Regx Regex();
 #else
-    private static Regex Regex() => _regex;
+    private static Regx Regex() => _regex;
 
-    private static readonly Regex _regex = new(RegexString, RegexOptions);
+    private static readonly Regx _regex = new(RegexString, RegexOptions);
 #endif
 
+    /// <summary>
+    /// The logger used for logging information during code generation.
+    /// </summary>
     private SourceGeneratorLogger<RegexDtoGenerator> Logger { get; set; }
 
+    /// <summary>
+    /// Initializes the RegexDtoGenerator.
+    /// Registers the generated source code for the RegexDtoAttribute and the generated source code for each RegexDto class.
+    /// </summary>
+    /// <param name="context">The IncrementalGeneratorInitializationContext.</param>
+    ///
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         using (
@@ -315,16 +336,16 @@ public partial class RegexDtoGenerator : IIncrementalGenerator
                                         ),
                                     BaseType = isClass ? typeName + "Base" : "",
                                     Members = $"""
-                            {(!isClass ? RegexDtoParseDeclarationTemplate.Render(propertiesDeclarationModel2) : "")}
-                            {(!isClass ? RegexDtoPropertiesDeclarationTemplate.Render(propertiesDeclarationModel2) : "")}
-                            {RegexDtoConstructorDeclarationTemplate.Render(new RegexDtoConstructorDeclarationModel
-                                    {
-                                        ParameterlessConstructorVisibility = "public",
-                                        ParameterizedConstructorVisibility = "public",
-                                        TypeName = typeName,
-                                        Properties = propertiesDeclarationModel2.Properties
-                                    })}
-                            """
+                                    {(!isClass ? RegexDtoParseDeclarationTemplate.Render(propertiesDeclarationModel2) : "")}
+                                    {(!isClass ? RegexDtoPropertiesDeclarationTemplate.Render(propertiesDeclarationModel2) : "")}
+                                    {RegexDtoConstructorDeclarationTemplate.Render(new RegexDtoConstructorDeclarationModel
+                                            {
+                                                ParameterlessConstructorVisibility = "public",
+                                                ParameterizedConstructorVisibility = "public",
+                                                TypeName = typeName,
+                                                Properties = propertiesDeclarationModel2.Properties
+                                            })}
+                                    """
                                 };
 
                                 sources.Add(

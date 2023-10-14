@@ -1,6 +1,6 @@
 ---
 authors:
-  - dgmjr
+- dgmjr
 title: Regex DTO Generator
 description: This is a simple tool to generate DTOs from a regex. It is a work in progress.
 lastmod: 2022-12-28-07:31:51
@@ -8,10 +8,10 @@ date: 2022-12-28-07:31:50
 license: MIT
 type: readme
 keywords:
-  - codegen
-  - roslyn
-  - source-generator
-  - roslyn-generator
+- codegen
+- roslyn
+- source-generator
+- roslyn-generator
 slug: regex-dto-generator
 ---
 

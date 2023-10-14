@@ -4,9 +4,9 @@
  *   Created: 2022-12-28-11:49:14
  *   Modified: 2022-12-28-11:49:16
  *
- *   Author: David G. Mooore, Jr. <david@dgmjr.io>
+ *   Author: David G. Moore, Jr. <david@dgmjr.io>
  *
- *   Copyright © 2022-2023 David G. Mooore, Jr., All Rights Reserved
+ *   Copyright © 2022-2023 David G. Moore, Jr., All Rights Reserved
  *      License: MIT (https://opensource.org/licenses/MIT)
 -->
 
@@ -21,14 +21,10 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
-    <!-- <PackageReference Include="Dgmjr.RegexDtoGenerator" IncludeAssets="Analyzers;Build" ExcludeAssets="ContentFiles; Lib; Source; Native; Runtime" PrivateAssets="All" /> -->
-    <!--<PackageReference Include="Dgmjr.RegexDtoGenerator" Version="0.0.1-local" />-->
     <PackageReference Include="System.Threading.Tasks.Extensions" VersionOverride="[4.5.4,)" />
     <PackageReference Include="System.Text.Json" />
-    <!-- <ProjectReference Include="../src/Dgmjr.RegexDtoGenerator.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" IncludeAssets="Analyzers;Build" ExcludeAssets="ContentFiles; Lib; Source; Native; Runtime" PrivateAssets="All" /> -->
-    <!--< Include="Dgmjr.RegexDtoGenerator" ReferenceOutputAssembly="false" OutputItemType="Analyzer" IncludeAssets="build; analyzers" ExcludeAssets="ContentFiles; Lib; Source; Native;" PrivateAssets="all" VersionOverride="0.0.1-Local" />-->
     <ProjectReference Include="../src/Dgmjr.RegexDtoGenerator.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" IncludeAssets="build; analyzers" ExcludeAssets="ContentFiles; Lib; Source; Native;" PrivateAssets="all" VersionOverride="0.0.1-Local" />
-    <!-- <PackageReference Include="Dgmjr.RegexDtoGenerator" ReferenceOutputAssembly="false" OutputItemType="Analyzer" IncludeAssets="build; analyzers" ExcludeAssets="ContentFiles; Lib; Source; Native;" PrivateAssets="all" VersionOverride="0.0.1-Local" /> -->
+    <SourceCodePackageReference Include="System.Private.CoreLib.Polyfills" />
   </ItemGroup>
   <Target Name="Clean">
     <RemoveDir Directories="$(BaseIntermediateOutputPath);$(IntermediateOutputPath)" />
