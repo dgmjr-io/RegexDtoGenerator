@@ -12,10 +12,29 @@
 
 namespace Dgmjr.RegexDtoGenerator.Models;
 
-internal record struct RegexDtoConstructorDeclarationModel
+internal record struct RegexDtoConstructorDeclarationModel(
+    string ParameterizedConstructorVisibility,
+    string ParameterlessConstructorVisibility,
+    string TypeName,
+    RegexDtoPropertyDeclarationModel[] Properties
+)
 {
-    public string ParameterizedConstructorVisibility { get; set; }
-    public string ParameterlessConstructorVisibility { get; set; }
-    public string TypeName { get; set; }
-    public RegexDtoPropertyDeclarationModel[] Properties { get; set; }
+    public readonly string Declaration =>
+        $@"
+        {ParameterizedConstructorVisibility} {TypeName}(string s)
+        {{
+            var match = Regex().Match(s);
+            if (!match.Success)
+            {{
+                throw new ArgumentException($""The string \""{{s}}\"" does not match the regular expression \""{{RegexString}}\""."", nameof(s));
+            }}
+
+            {Join("\n", Properties.Select(p => $"{p.Name} = {(p.IsNullable ? $"string.IsNullOrEmpty(match.Groups[\"{p.Name}\"]?.Value) ? null : ({p.Type}?)System.Convert.ChangeType(match.Groups[\"{p.Name}\"]?.Value, typeof({p.Type}))" : $"({p.Type})System.Convert.ChangeType(match.Groups[\"{p.Name}\"]?.Value, typeof({p.Type}))")};"))}
+
+            OriginalString = s;
+        }}
+
+        {ParameterlessConstructorVisibility} {TypeName}()
+        {{
+        }}";
 }

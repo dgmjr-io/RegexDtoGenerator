@@ -2,7 +2,7 @@ using System;
 
 namespace Dgmjr.RegexDtoGenerator.Models;
 
-public record struct RegexDtoFileModel(
+internal record struct RegexDtoFileModel(
     string Source,
     string? TypeName = null,
     string? NamespaceName = null,

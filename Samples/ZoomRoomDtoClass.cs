@@ -7,7 +7,7 @@ namespace Us.Zoom;
 public partial record class ZoomRoomDtoClass
 {
     public override Uri Url =>
-        new Uri(
+        new(
             $"https://zoom.us/j/{RoomNumber}{(!IsNullOrEmpty(Password) ? $"?pwd={Password}" : "")}"
         );
 }

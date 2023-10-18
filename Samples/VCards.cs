@@ -21,10 +21,12 @@ namespace Contacts
         [System.Diagnostics.CodeAnalysis.StringSyntax("regex")]
 #endif
         public const string RegexString =
-            @"""BEGIN:VCARD(?:\r\n(FN=(?<FormattedName>\w+))?(?:\r\n(?<Version>VERSION(?<VersionVersion>(?<Majorint>\d+)\.(?<Minor>\d+))))?(?:
-(?<Address>ADR;TYPE=(?<TypeAddressType>\w+):(?<StreetAddress>\w+);(?<Locality>\w+);(?<Region>\w+);(?<PostalCode>\w+);(?<Country>\w+)))?(?:
-(?<Birthday>BDAY(?<BirthdayDateOnly>(?<Yearint>\d{4})-(?<Month>\d{2})-(?<Day>\d{2})))))?
-END:VCARD""";
+            @"""
+            BEGIN:VCARD(?:\r\n(FN=(?<FormattedName>\w+))?(?:\r\n(?<Version>VERSION(?<VersionVersion>(?<Major>\d+)\.(?<Minor>\d+))))?(?:
+            (?<Address>ADR;TYPE=(?<TypeAddressType>\w+):(?<StreetAddress>\w+);(?<Locality>\w+);(?<Region>\w+);(?<PostalCode>\w+);(?<Country>\w+)))?(?:
+            (?<Birthday>BDAY(?<BirthdayDateOnly>(?<Year>\d{4})-(?<Month>\d{2})-(?<Day>\d{2})))))?
+            END:VCARD
+            """;
 
 #if NET7_0_OR_GREATER
         [GeneratedRegex(
@@ -38,12 +40,11 @@ END:VCARD""";
                 | RegexOptions.RightToLeft
                 | RegexOptions.Singleline
         )]
-        public static partial System.Text.RegularExpressions.Regex Regex();
+        public static partial Regex Regex();
 #else
-        private static readonly System.Text.RegularExpressions.Regex _regex =
-            new System.Text.RegularExpressions.Regex(RegexString);
+        private static readonly Regex _regex = new Regex(RegexString);
 
-        public static System.Text.RegularExpressions.Regex Regex() => _regex;
+        public static Regex Regex() => _regex;
 #endif
 
         public static VCard Parse(string s)
@@ -142,11 +143,13 @@ namespace Contacts
 #if NET7_0_OR_GREATER
         [System.Diagnostics.CodeAnalysis.StringSyntax("regex")]
 #endif
-        public const string RegexString =
-            @"""BEGIN:VCARD(?:\r\n(FN=(?<FormattedName>\w+))?(?:\r\n(?<Version>VERSION(?<VersionVersion>(?<Majorint>\d+)\.(?<Minor>\d+))))?(?:
-(?<Address>ADR;TYPE=(?<TypeAddressType>\w+):(?<StreetAddress>\w+);(?<Locality>\w+);(?<Region>\w+);(?<PostalCode>\w+);(?<Country>\w+)))?(?:
-(?<Birthday>BDAY(?<BirthdayDateOnly>(?<Yearint>\d{4})-(?<Month>\d{2})-(?<Day>\d{2})))))?
-END:VCARD""";
+        public new const string RegexString =
+            @"""
+            BEGIN:VCARD(?:\r\n(FN=(?<FormattedName>\w+))?(?:\r\n(?<Version>VERSION(?<VersionVersion>(?<Major>\d+)\.(?<Minor>\d+))))?(?:
+            (?<Address>ADR;TYPE=(?<TypeAddressType>\w+):(?<StreetAddress>\w+);(?<Locality>\w+);(?<Region>\w+);(?<PostalCode>\w+);(?<Country>\w+)))?(?:
+            (?<Birthday>BDAY(?<BirthdayDateOnly>(?<Year>\d{4})-(?<Month>\d{2})-(?<Day>\d{2})))))?
+            END:VCARD
+            """;
 
 #if NET7_0_OR_GREATER
         [GeneratedRegex(
@@ -160,12 +163,11 @@ END:VCARD""";
                 | RegexOptions.RightToLeft
                 | RegexOptions.Singleline
         )]
-        public static partial System.Text.RegularExpressions.Regex Regex();
+        public static partial Regex Regex();
 #else
-        private static readonly System.Text.RegularExpressions.Regex _regex =
-            new System.Text.RegularExpressions.Regex(RegexString);
+        private static readonly Regex _regex = new Regex(RegexString);
 
-        public static System.Text.RegularExpressions.Regex Regex() => _regex;
+        public static new Regex Regex() => _regex;
 #endif
 
         public VCard() { }

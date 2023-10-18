@@ -18,6 +18,8 @@
     <DefineConstants>$(DefineConstants);SCRIBAN_SIGNED;SCRIBAN_PUBLIC</DefineConstants>
     <SlnGenSolutionFolder>codegen</SlnGenSolutionFolder>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <IsRoslynComponent>true</IsRoslynComponent>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Common" />
@@ -30,6 +32,7 @@
     <PackageReference Include="ThisAssembly.Project" />
     <UsingsPackageReference Include="System.Text.RegularExpressions.Usings" />
     <UsingsPackageReference Include="System.Usings" />
+    <SourceCodePackageReference Include="System.Private.CoreLib.Polyfills" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,6 +48,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageFile Include="$(OutputPath)\$(AssemblyName).dll" PackagePath="analyzers/dotnet/cs/$(TargetFramework)/$(AssemblyName).dll" Visible="false" />
+    <PackageFile Include="./bin/$(Configuration)/$(TargetFramework)/**/*.dll" PackagePath="analyzers/dotnet/cs/%(RecursiveDir)%(Filename)%(Extension)" Visible="false" />
   </ItemGroup>
 </Project>

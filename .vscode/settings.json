@@ -1,3 +1,8 @@
 {
-    "dotnet-test-explorer.testProjectPath": "**/RegexDtoGenerator.Tests.csproj"
+  "dotnet-test-explorer.testProjectPath": "/Users/david/GitHub/dgmjr-io/src/Types/RegexDtoGenerator/Tests/Dgmjr.RegexDtoGenerator.Tests.csproj",
+  "cSpell.words": [
+    "BDAY",
+    "ffffzzz",
+    "VCARD"
+  ]
 }

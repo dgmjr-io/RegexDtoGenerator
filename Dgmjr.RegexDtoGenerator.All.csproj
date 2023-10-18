@@ -16,8 +16,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="./src/DGmjr.RegexDtoGenerator.csproj" />
-    <ProjectReference Include="./Samples/DGmjr.RegexDtoGenerator.Samples.csproj" />
+    <ProjectReference Include="./src/Dgmjr.RegexDtoGenerator.csproj" />
+    <ProjectReference Include="./Samples/Dgmjr.RegexDtoGenerator.Samples.csproj" />
     <ProjectReference Include="./Tests/Dgmjr.RegexDtoGenerator.Tests.csproj" />
   </ItemGroup>
 </Project>

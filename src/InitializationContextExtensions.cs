@@ -2,7 +2,7 @@ namespace Dgmjr.RegexDtoGenerator;
 
 using Microsoft.CodeAnalysis;
 
-public static class RegisterPostInitializationOutputExtensions
+internal static class RegisterPostInitializationOutputExtensions
 {
     public static void RegisterPostInitializationOutput(
         this IncrementalGeneratorInitializationContext context,

@@ -7,7 +7,7 @@ namespace Us.Zoom;
 public partial record struct ZoomRoom
 {
     public Uri Url =>
-        new Uri(
+        new(
             $"https://zoom.us/j/{RoomNumber}{(!IsNullOrEmpty(Password) ? $"?pwd={Password}" : "")}"
         );
 }

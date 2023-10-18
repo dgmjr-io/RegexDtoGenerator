@@ -12,18 +12,18 @@
 
 <Project Sdk="Microsoft.NET.Sdk" InitialTargets="Clean">
   <PropertyGroup>
-    <!-- <TargetFrameworks>net8.0</TargetFrameworks> -->
-    <!-- <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net7.0</TargetFrameworks> -->
     <TargetFramework>netstandard2.0</TargetFramework>
     <IntermediateOutputPath Condition="'$(IntermediateOutputPath)' == ''">obj/</IntermediateOutputPath>
     <SlnGenSolutionFolder>codegen</SlnGenSolutionFolder>
     <IsNuGetized>false</IsNuGetized>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Threading.Tasks.Extensions" VersionOverride="[4.5.4,)" />
     <PackageReference Include="System.Text.Json" />
-    <ProjectReference Include="../src/Dgmjr.RegexDtoGenerator.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" IncludeAssets="build; analyzers" ExcludeAssets="ContentFiles; Lib; Source; Native;" PrivateAssets="all" VersionOverride="0.0.1-Local" />
+    <!-- <ProjectReference Include="../src/Dgmjr.RegexDtoGenerator.csproj" Targets="Restore;Build;Pack" ReferenceOutputAssembly="true" OutputItemType="Analyzer" IncludeAssets="build; analyzers" ExcludeAssets="ContentFiles; Lib; Source; Native;" PrivateAssets="all" VersionOverride="0.0.1-Local" /> -->
+    <SourceGeneratorPackageReference Include="Dgmjr.RegexDtoGenerator" />
     <SourceCodePackageReference Include="System.Private.CoreLib.Polyfills" />
   </ItemGroup>
   <Target Name="Clean">

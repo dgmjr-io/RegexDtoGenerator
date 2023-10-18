@@ -28,7 +28,7 @@ using static System.Text.Json.JsonSerializer;
 
 using AddSource = Action<string, string>; //string hintName, string sourceText);
 
-public class SourceGeneratorLogger<TSourceGenerator>(AddSource addSource) : IDisposable
+internal class SourceGeneratorLogger<TSourceGenerator>(AddSource addSource) : IDisposable
     where TSourceGenerator : IIncrementalGenerator
 {
     private static string Filename =>
@@ -88,14 +88,6 @@ public class SourceGeneratorLogger<TSourceGenerator>(AddSource addSource) : IDis
         }
         writer.WriteEndObject();
         writer.Flush();
-        // var json = UTF8.GetString(ms.ToArray());
-        // AddSource(Filename,
-        // $"""
-        // /*
-        //     {json}
-        // */
-        // """
-        // );
     }
 
     [Conditional("LOG")]
