@@ -32,11 +32,11 @@ namespace Contacts
                 | RegexOptions.RightToLeft
                 | RegexOptions.Singleline
         )]
-        public static partial Regx Regex();
+        public static partial Regex Regex();
 #else
-        private static readonly Regx _regex = new(RegexString);
+        private static readonly Regex _regex = new(RegexString);
 
-        public static Regx Regex() => _regex;
+        public static Regex Regex() => _regex;
 #endif
 
         public static USPostalAddress Parse(string s)
@@ -109,9 +109,9 @@ namespace Contacts
         )]
         public static partial System.Text.RegularExpressions.Regex Regex();
 #else
-        private static readonly Regx _regex = new(RegexString);
+        private static readonly Regex _regex = new(RegexString);
 
-        public static new Regx Regex() => _regex;
+        public static new Regex Regex() => _regex;
 #endif
 
         public USPostalAddress() { }

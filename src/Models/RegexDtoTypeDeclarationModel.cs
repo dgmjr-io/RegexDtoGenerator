@@ -26,7 +26,7 @@ internal record struct RegexDtoDeclarationModel
         RegexDtoConstructorDeclarationModel constructor,
         IEnumerable<RegexDtoPropertyDeclarationModel> properties,
         string baseType = "",
-        Rxo regexOptions = Compiled | IgnoreCase | ExplicitCapture
+        RegexOptions regexOptions = Compiled | IgnoreCase | ExplicitCapture
     )
     {
         TypeName = typeName;
@@ -56,7 +56,7 @@ internal record struct RegexDtoDeclarationModel
     }
 
     public const string Visibility = "public";
-    public readonly Rxo RegexOptions { get; init; }
+    public readonly RegexOptions RegexOptions { get; init; }
     public readonly string NamespaceName { get; init; }
     public readonly string Regex { get; init; }
     public readonly string TypeName { get; init; }
@@ -81,7 +81,7 @@ internal record struct RegexDtoBaseTypeDeclarationModel
         RegexDtoConstructorDeclarationModel constructor,
         IEnumerable<RegexDtoPropertyDeclarationModel> properties,
         string baseType = "",
-        Rxo regexOptions = Compiled | IgnoreCase | ExplicitCapture
+        RegexOptions regexOptions = Compiled | IgnoreCase | ExplicitCapture
     )
     {
         TypeName = typeName;
@@ -111,7 +111,7 @@ internal record struct RegexDtoBaseTypeDeclarationModel
     }
 
     public const string Visibility = "public";
-    public readonly Rxo RegexOptions { get; init; }
+    public readonly RegexOptions RegexOptions { get; init; }
     public readonly string NamespaceName { get; init; }
     public readonly string Regex { get; init; }
     public readonly string TypeName { get; init; }

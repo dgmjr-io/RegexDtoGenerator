@@ -13,5 +13,5 @@
 // public class RegexDtoAttribute(
 //     string regex,
 //     type? baseType = default,
-//     Rxo regexOptions = Rxo.Compiled | Rxo.IgnoreCase | Rxo.Multiline
+//     RegexOptions regexOptions = RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Multiline
 // ) : Attribute { }

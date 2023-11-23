@@ -38,15 +38,15 @@ public partial class RegexDtoGenerator : IIncrementalGenerator
     private const string RegexString =
         @"\(\?\<(?<Name>[a-zA-Z0-9]+)(?:\:(?<Type>[a-zA-Z0-9]+\??))?\>.*?\)";
 
-    private const Rxo RegexOptions = Compiled | IgnoreCase | Multiline;
+    private const RegexOptions RegexOptions = Compiled | IgnoreCase | Multiline;
 
 #if NET7_0_OR_GREATER
     [GeneratedRegex(RegexString, RegexOptions)]
-    private static partial Regx Regex();
+    private static partial Regex Regex();
 #else
-    private static Regx Regex() => _regex;
+    private static Regex Regex() => _regex;
 
-    private static readonly Regx _regex = new(RegexString, RegexOptions);
+    private static readonly Regex _regex = new(RegexString, RegexOptions);
 #endif
 
     /// <summary>
