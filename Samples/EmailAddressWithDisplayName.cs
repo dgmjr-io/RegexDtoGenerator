@@ -12,6 +12,7 @@
 
 namespace Contacts;
 
+/// <summary>A DTO with an email address and a display name</summary>
 [RegexDto(
     @"^(?<FirstName:string?>\w+)?\s*?(?<LastName:string?>\w+)?\s*?\<(?<Username>\w+)@(?<Domain>((?:\w+\.))(?<Tld>\w+)))\>$"
 )]

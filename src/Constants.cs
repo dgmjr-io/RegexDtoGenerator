@@ -55,9 +55,6 @@ internal static partial class Constants
         using System.Runtime.CompilerServices;
         using System.Text;
         using System.Text.RegularExpressions;
-        #if NET7_0_OR_GREATER
-        using SS = System.Diagnostics.CodeAnalysis.StringSyntaxAttribute;
-        #endif
 
         #nullable enable
 
@@ -71,10 +68,13 @@ internal static partial class Constants
         {{{GeneratedCodeAttributesList}}}
         internal sealed class RegexDtoAttribute(
             #if NET7_0_OR_GREATER
-            [StringSyntax(SS.Regex)]
+            [@StringSyntax(StringSyntax.Regex)]
             #endif
             string Regex, System.Type? BaseType = null, RegexOptions RegexOptions = Compiled | CultureInvariant | ExplicitCapture | IgnoreCase | IgnorePatternWhitespace | Singleline) : System.Attribute
         {
+            public string Regex { get; } = Regex;
+            public System.Type? BaseType { get; } = BaseType;
+            public RegexOptions RegexOptions { get; } = RegexOptions;
         }
         """";
 
@@ -89,7 +89,7 @@ internal static partial class Constants
                 const RegexOptions RegexOptions = (RegexOptions)({{ regex_options | string.replace ","  " | " }});
 
                 #if NET7_0_OR_GREATER
-                [StringSyntax(SS.Regex)]
+                [@StringSyntax(StringSyntax.Regex)]
                 #endif
                 public const string RegexString = @"{{ regex }}";
 
@@ -122,7 +122,7 @@ internal static partial class Constants
                 const RegexOptions RegexOptions = (RegexOptions)({{ regex_options | string.replace "," " | " }});
 
                 #if NET7_0_OR_GREATER
-                [StringSyntax(SS.Regex)]
+                [@StringSyntax(StringSyntax.Regex)]
                 #endif
                 /// <summary>The regex string that will be used to validate and recognize the DTO</summary>
                 public const string RegexString = @"{{ regex }}";
