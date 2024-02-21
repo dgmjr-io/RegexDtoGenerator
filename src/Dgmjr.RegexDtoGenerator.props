@@ -1,5 +1,5 @@
 <Project>
   <ItemGroup>
-    <!-- <Using Include="System.Diagnostics.CodeAnalysis.StringSyntaxAttribute" Alias="@StringSyntax" /> -->
+    <Using Include="System.Diagnostics.CodeAnalysis.StringSyntaxAttribute" Alias="@StringSyntax" />
   </ItemGroup>
 </Project>

@@ -121,10 +121,10 @@ internal static partial class Constants
             {
                 const RegexOptions RegexOptions = (RegexOptions)({{ regex_options | string.replace "," " | " }});
 
+                /// <summary>The regex string that will be used to validate and recognize the DTO</summary>
                 #if NET7_0_OR_GREATER
                 [@StringSyntax(StringSyntax.Regex)]
                 #endif
-                /// <summary>The regex string that will be used to validate and recognize the DTO</summary>
                 public const string RegexString = @"{{ regex }}";
 
                 // #if NET7_0_OR_GREATER
